@@ -3,7 +3,6 @@
 ## Duration and alignment
 
 **Duration:** 2 hours  
-**Theory alignment:** Chapter 5, Python Functions, Classes, and Modules
 
 You will complete a small `netinventory` package by implementing reusable functions, a `Device` class, and an `Inventory` service.
 

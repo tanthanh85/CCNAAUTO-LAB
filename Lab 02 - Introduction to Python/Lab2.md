@@ -3,7 +3,6 @@
 ## Duration and alignment
 
 **Duration:** 2 hours  
-**Theory alignment:** Chapter 4, Introduction to Python
 
 In this lab, you will build a small device-inventory report using Python's core data types, input conversion, conditions, and loops.
 

@@ -3,7 +3,6 @@
 ## Duration and alignment
 
 **Duration:** 2 hours  
-**Theory alignment:** Chapter 6, Working with Data in Python
 
 You will parse equivalent device inventories from CSV, JSON, YAML, and XML, normalize them, validate them, and confirm equivalence with unit tests. XML is parsed with `xmltodict`.
 
