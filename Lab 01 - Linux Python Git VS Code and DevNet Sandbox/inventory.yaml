@@ -1,0 +1,9 @@
+lab: training-lab
+devices:
+  - name: router-01
+    management_ip: 192.0.2.10
+    platform: iosxe
+  - name: switch-01
+    management_ip: 192.0.2.21
+    platform: iosxe
+
