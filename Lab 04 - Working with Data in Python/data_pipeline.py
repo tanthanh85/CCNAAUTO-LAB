@@ -8,8 +8,8 @@ import csv
 import ipaddress
 import json
 from pathlib import Path
-from xml.etree import ElementTree
 
+import xmltodict
 import yaml
 
 
@@ -34,7 +34,7 @@ def parse_yaml(path: Path) -> list[dict]:
     raise NotImplementedError("Complete parse_yaml in Lab 4")
 
 
-def required_xml_text(element: ElementTree.Element, name: str) -> str:
+def required_xml_text(record: dict, name: str) -> str:
     raise NotImplementedError("Complete required_xml_text in Lab 4")
 
 
@@ -80,4 +80,3 @@ def main() -> int:
 
 if __name__ == "__main__":
     raise SystemExit(main())
-

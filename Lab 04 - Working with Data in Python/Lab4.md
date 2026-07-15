@@ -106,7 +106,7 @@ Consider these differences:
 - CSV fields arrive as text and require explicit conversion.
 - JSON distinguishes strings, numbers, Booleans, arrays, objects, and `null`.
 - YAML is readable for configuration but whitespace and implicit types require care. Use `yaml.safe_load`, not an unsafe object constructor.
-- XML represents a tree of elements, attributes, text, and namespaces. Applications must decide how that tree maps to domain objects.
+- XML represents a tree of elements, attributes, text, and namespaces. In this lab, `xmltodict` converts that tree into nested Python dictionaries and lists. Applications must still decide how the resulting structure maps to domain objects.
 
 ---
 
@@ -222,24 +222,44 @@ YAML can construct complex Python objects when unsafe loaders are used. Configur
 
 ## Part 6: Implement XML parsing
 
+The third-party `xmltodict` library makes common XML structures feel similar to parsed JSON. It represents attributes with keys beginning with `@` and mixed element text with `#text`. Repeated elements normally become lists, while a single occurrence may become one dictionary unless `force_list` is used.
+
+Confirm that the library was installed from `requirements.txt`:
+
+```bash
+python -m pip show xmltodict
+```
+
 Implement:
 
 ```python
 def parse_xml(path: Path) -> list[dict]:
-    """Parse device elements from the training XML document."""
-    root = ElementTree.parse(path).getroot()
-    if root.tag != "inventory":
-        raise ValueError("XML root must be inventory")
+    """Parse XML with xmltodict and return device dictionaries."""
+    with path.open(encoding="utf-8") as stream:
+        document = xmltodict.parse(
+            stream.read(),
+            force_list=("device",),
+        )
+
+    inventory = document.get("inventory")
+    if not isinstance(inventory, dict):
+        raise ValueError("XML document requires an inventory root")
+
+    devices = inventory.get("device")
+    if not isinstance(devices, list):
+        raise ValueError("XML inventory requires device elements")
 
     records = []
-    for element in root.findall("device"):
+    for device in devices:
+        if not isinstance(device, dict):
+            raise ValueError("Each XML device must be an element mapping")
         record = {
-            "name": required_xml_text(element, "name"),
-            "management_ip": required_xml_text(element, "management_ip"),
-            "role": required_xml_text(element, "role"),
-            "platform": required_xml_text(element, "platform"),
-            "enabled": parse_bool(required_xml_text(element, "enabled")),
-            "site": required_xml_text(element, "site"),
+            "name": required_xml_text(device, "name"),
+            "management_ip": required_xml_text(device, "management_ip"),
+            "role": required_xml_text(device, "role"),
+            "platform": required_xml_text(device, "platform"),
+            "enabled": parse_bool(required_xml_text(device, "enabled")),
+            "site": required_xml_text(device, "site"),
         }
         records.append(record)
     return records
@@ -248,10 +268,10 @@ def parse_xml(path: Path) -> list[dict]:
 Implement the helper:
 
 ```python
-def required_xml_text(element: ElementTree.Element, name: str) -> str:
-    """Return nonempty child text or raise ValueError."""
-    value = element.findtext(name)
-    if value is None or value.strip() == "":
+def required_xml_text(record: dict, name: str) -> str:
+    """Return a required nonempty scalar from an xmltodict mapping."""
+    value = record.get(name)
+    if not isinstance(value, str) or value.strip() == "":
         raise ValueError(f"XML device requires {name}")
     return value.strip()
 ```
@@ -262,7 +282,9 @@ Run:
 python -m unittest -v tests.test_data_pipeline.XmlTests
 ```
 
-The standard library's ElementTree is suitable for this small trusted training file. Applications processing complex or untrusted XML must also consider entity expansion and other XML security risks, and may use a hardened library according to organizational standards.
+`force_list=("device",)` makes collection handling consistent whether the XML contains one device or many. Without it, one `<device>` may become a dictionary while repeated `<device>` elements become a list.
+
+The current `xmltodict.parse()` API disables entity parsing by default. Keep that secure default. XML namespaces, attributes, mixed content, and exact round-trip fidelity still require explicit design; `xmltodict` targets common XML-to-dictionary use cases rather than preserving every XML nuance.
 
 ---
 
@@ -577,7 +599,6 @@ Merge the pull request and synchronize local `main`.
 - [Python input and output](https://docs.python.org/3/tutorial/inputoutput.html)
 - [Python CSV](https://docs.python.org/3/library/csv.html)
 - [Python JSON](https://docs.python.org/3/library/json.html)
-- [Python ElementTree](https://docs.python.org/3/library/xml.etree.elementtree.html)
+- [`xmltodict` documentation](https://pypi.org/project/xmltodict/)
 - [Python exceptions](https://docs.python.org/3/tutorial/errors.html)
 - [Python unittest](https://docs.python.org/3/library/unittest.html)
-
