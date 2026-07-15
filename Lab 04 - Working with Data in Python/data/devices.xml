@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<inventory>
+  <device>
+    <name>edge-r1</name>
+    <management_ip>192.0.2.10</management_ip>
+    <role>router</role>
+    <platform>iosxe</platform>
+    <enabled>true</enabled>
+    <site>hanoi</site>
+  </device>
+  <device>
+    <name>access-sw1</name>
+    <management_ip>192.0.2.21</management_ip>
+    <role>switch</role>
+    <platform>iosxe</platform>
+    <enabled>true</enabled>
+    <site>hanoi</site>
+  </device>
+  <device>
+    <name>lab-fw1</name>
+    <management_ip>192.0.2.30</management_ip>
+    <role>firewall</role>
+    <platform>ftd</platform>
+    <enabled>false</enabled>
+    <site>hanoi</site>
+  </device>
+</inventory>
+

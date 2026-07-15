@@ -1,0 +1,5 @@
+name,management_ip,role,platform,enabled,site
+edge-r1,192.0.2.10,router,iosxe,true,hanoi
+access-sw1,192.0.2.21,switch,iosxe,true,hanoi
+lab-fw1,192.0.2.30,firewall,ftd,false,hanoi
+
