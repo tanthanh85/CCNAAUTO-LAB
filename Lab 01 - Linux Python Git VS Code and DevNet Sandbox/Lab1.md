@@ -21,6 +21,9 @@ After completing this lab, you should be able to:
 - Create, activate, use, and remove a Python virtual environment.
 - Install Python packages without modifying the system Python environment.
 - Create a local Git repository and record a controlled change.
+- Create and secure a GitHub account for storing course code.
+- Publish, clone, pull, and push a repository using a beginner GitHub workflow.
+- Use branches and pull requests to review a change before merging it.
 - Use the Explorer, integrated terminal, Command Palette, Source Control view, Python interpreter selector, search, and debugger in VS Code.
 - Distinguish an Always-On sandbox from a reservation-based sandbox.
 - Reserve a private DevNet Sandbox and locate its topology, instructions, credentials, and VPN access details.
@@ -30,6 +33,7 @@ After completing this lab, you should be able to:
 - One Ubuntu 26.04 LTS workstation per learner with internet access.
 - A user account with `sudo` privileges.
 - A modern web browser.
+- A personal email address that can receive GitHub verification messages.
 - A Cisco.com account that can sign in to Cisco DevNet.
 - This complete `Lab 01 - Linux Python Git VS Code and DevNet Sandbox` folder.
 
@@ -310,7 +314,7 @@ Update package metadata and install the course tools:
 sudo apt update
 sudo apt install -y \
   python3 python3-pip python3-venv python3-dev \
-  git curl wget jq tree nano vim openssh-client build-essential
+  git gh curl wget jq tree nano vim openssh-client build-essential
 ```
 
 Install Visual Studio Code through Snap, which is normally available on Ubuntu desktop:
@@ -327,6 +331,7 @@ Verify the tools:
 python3 --version
 python3 -m pip --version
 git --version
+gh --version
 code --version
 ssh -V
 curl --version | head -n 1
@@ -498,7 +503,7 @@ git diff
 Stage the learner files and create the first commit:
 
 ```bash
-git add README.md requirements.txt verify_workstation.py inventory.yaml .gitignore
+git add Lab1.md requirements.txt verify_workstation.py inventory.yaml .gitignore
 git status
 git diff --staged
 git commit -m "Create Lab 01 workstation project"
@@ -520,7 +525,276 @@ Git records meaningful project states. Review `git diff` before staging and `git
 
 ---
 
-## Part 6: Use common Visual Studio Code features
+## Part 6: Store course code on GitHub
+
+Git and GitHub are related but different. **Git** is the version-control program running on your workstation. **GitHub** hosts remote Git repositories and adds collaboration features such as issues, pull requests, reviews, and repository permissions.
+
+For this course, each learner will use a personal GitHub account and a **private repository** to store lab code. Never upload passwords, API keys, tokens, VPN credentials, private keys, cookies, production configurations, or customer data. Deleting a secret in a later commit does not reliably remove it from Git history.
+
+### 6.1 Register and secure a GitHub account
+
+1. Open [GitHub](https://github.com/) and select **Sign up**.
+2. Register a personal account using an email address you can access. Do not create a shared team account.
+3. Choose a professional user name that you will be comfortable using in repository URLs.
+4. Use a unique password stored in an approved password manager.
+5. Open the verification message from GitHub and verify the email address.
+6. Enable two-factor authentication when prompted. Save the recovery codes in a secure location separate from the workstation.
+7. In **Settings > Emails**, review whether your email should remain private. GitHub can provide a `noreply` address for commits.
+8. Review the public profile. Do not publish personal information that is unnecessary for the course.
+
+GitHub currently requires contributors to use two-factor authentication. Its onboarding documentation also identifies email verification and account security as initial setup tasks. Follow the current [GitHub account setup guide](https://docs.github.com/en/get-started/onboarding/getting-started-with-your-github-account) if the interface differs from these steps.
+
+### 6.2 Understand the GitHub vocabulary
+
+| Term | Meaning |
+|---|---|
+| Repository | A project and its version history. A repository may be local, remote, or both. |
+| Remote | A named connection from a local repository to another repository; `origin` is the conventional name for the primary GitHub remote. |
+| Clone | A new local copy of a remote repository, including its history and remote configuration. |
+| Commit | A recorded snapshot with an author, time, message, and parent history. |
+| Push | Send local commits to a remote branch. |
+| Fetch | Download remote branch information without merging it into the current branch. |
+| Pull | Fetch remote changes and integrate them into the current branch. |
+| Branch | A movable line of development. `main` is normally the stable default branch. |
+| Pull request | A GitHub proposal to review and merge one branch into another. It is not the same operation as `git pull`. |
+| Issue | A GitHub item for tracking a task, defect, question, or planned improvement. |
+| Fork | A GitHub-hosted copy under a different account, commonly used to contribute to a repository you cannot modify directly. |
+
+### 6.3 Authenticate safely from Ubuntu
+
+GitHub no longer accepts an account password for Git operations over HTTPS. For this beginner lab, use GitHub CLI to authenticate through the browser and let it configure Git securely.
+
+Confirm that GitHub CLI was installed in Part 3:
+
+```bash
+gh --version
+```
+
+Start authentication:
+
+```bash
+gh auth login
+```
+
+Select these answers when offered:
+
+1. **GitHub.com**
+2. **HTTPS**
+3. Authenticate Git with your GitHub credentials: **Yes**
+4. **Login with a web browser**
+
+Copy the one-time code, press `Enter` to open the browser, sign in, and authorize GitHub CLI. Then return to the terminal and verify the result:
+
+```bash
+gh auth status
+```
+
+Do not put a personal access token in a command, source file, `.env` file, shell history, screenshot, or Git repository. If a later environment requires a token, create the minimum permissions and expiration needed, use it only as a secret, and revoke it when it is no longer required. GitHub's [authentication documentation](https://docs.github.com/en/authentication/keeping-your-account-and-data-secure/about-authentication-to-github) explains the supported methods.
+
+### 6.4 Publish the Lab 01 repository
+
+Return to the Git repository created in Part 5 and ensure it is ready to publish:
+
+```bash
+cd ~/devnet-associate/labs/lab01
+git status
+git branch --show-current
+git log --oneline --decorate -n 5
+```
+
+The working tree should be clean and the current branch should be `main`. Search for common secret material before publishing:
+
+```bash
+git grep -n -E 'password|token|secret|private.key' || true
+```
+
+Review every match in context. A word such as `token` in documentation is not necessarily a credential, but an actual value must not be committed.
+
+Create a private GitHub repository from the current local repository:
+
+```bash
+gh repo create devnet-associate-lab01 \
+  --private \
+  --source=. \
+  --remote=origin \
+  --push
+```
+
+Verify the connection and tracking branch:
+
+```bash
+git remote -v
+git branch -vv
+gh repo view --web
+```
+
+In the browser, examine these common repository features:
+
+- **Code** shows the current files, branch selector, commit history, and clone URL.
+- **Issues** tracks work that should be discussed or completed.
+- **Pull requests** shows proposed changes and their reviews.
+- **Actions** shows automated workflows when a repository defines them.
+- **Settings** controls visibility, collaborators, security options, and other repository behavior.
+
+Keep the repository private unless the instructor explicitly approves publication. Private does not mean secret: collaborators and authorized services can still access it, so credentials never belong in the repository.
+
+### 6.5 Clone a repository
+
+`git clone` is normally used once, when placing an existing remote repository on a workstation. It creates the project directory, downloads its history, checks out the default branch, and configures `origin`.
+
+Practice cloning your repository into a separate directory:
+
+```bash
+mkdir -p ~/devnet-associate/github-clones
+cd ~/devnet-associate/github-clones
+git clone https://github.com/YOUR-GITHUB-USERNAME/devnet-associate-lab01.git
+cd devnet-associate-lab01
+git remote -v
+git status
+git log --oneline --decorate -n 5
+```
+
+Replace `YOUR-GITHUB-USERNAME` with your account name. Copying the HTTPS URL from the repository's **Code** button avoids typing errors. Do not run `git clone` repeatedly to update an existing copy; use `git pull` from inside that copy.
+
+### 6.6 Use the everyday pull-edit-commit-push workflow
+
+Use the original working copy for the following steps:
+
+```bash
+cd ~/devnet-associate/labs/lab01
+git switch main
+git pull --ff-only
+git status
+```
+
+`git pull --ff-only` updates the local branch only when Git can move it forward without creating an unexpected merge commit. If it refuses, stop and inspect the local and remote history rather than forcing the update.
+
+Create a small learner record that contains no sensitive information:
+
+```bash
+printf '%s\n' \
+  '# Lab Progress' \
+  '' \
+  '- Lab 01 workstation setup completed.' > PROGRESS.md
+```
+
+Review, stage, commit, and push the change:
+
+```bash
+git status
+git diff
+git add PROGRESS.md
+git diff --staged
+git commit -m "Document completion of Lab 01 setup"
+git push origin main
+```
+
+Refresh the repository page in the browser. Open `PROGRESS.md`, then open the latest commit to see the files and exact lines changed.
+
+The regular individual workflow is:
+
+```text
+git pull --ff-only
+      ↓
+edit and test files
+      ↓
+git status and git diff
+      ↓
+git add and git commit
+      ↓
+git push
+```
+
+Pull before beginning work, commit one meaningful change at a time, and push frequently enough that reviewed work is available remotely.
+
+### 6.7 Fetch and inspect before integrating
+
+`git fetch` downloads remote information without modifying the current files. It is useful when you want to inspect first:
+
+```bash
+git fetch origin
+git status
+git log --oneline --graph --decorate --all -n 12
+git diff main..origin/main
+```
+
+If the local `main` branch is simply behind `origin/main`, update it:
+
+```bash
+git pull --ff-only origin main
+```
+
+Never use `git push --force` in this course unless the instructor is deliberately teaching history repair in an isolated repository. Force-pushing can remove commits that other people depend on.
+
+### 6.8 Create a branch and pull request
+
+Even when working alone, a branch and pull request provide a review boundary before changing `main`.
+
+Start from an updated `main` branch:
+
+```bash
+git switch main
+git pull --ff-only
+git switch -c docs/add-course-purpose
+```
+
+Add a short statement:
+
+```bash
+printf '\nThis repository stores my DevNet Associate course lab code.\n' >> PROGRESS.md
+git diff
+git add PROGRESS.md
+git commit -m "Explain the purpose of the course repository"
+git push -u origin docs/add-course-purpose
+```
+
+Create a pull request in the browser:
+
+1. Open the repository on GitHub.
+2. Select **Compare & pull request** for `docs/add-course-purpose`, or open **Pull requests > New pull request**.
+3. Confirm that the base branch is `main` and the compare branch is `docs/add-course-purpose`.
+4. Review the **Files changed** tab.
+5. Enter a clear title and describe why the change is needed and how it was validated.
+6. Create the pull request.
+7. If working with an instructor or team, request a review and wait for approval.
+8. Merge the pull request and delete the remote feature branch.
+
+Update the local repository after the browser merge:
+
+```bash
+git switch main
+git pull --ff-only
+git branch -d docs/add-course-purpose
+git fetch --prune
+git log --oneline --graph --decorate --all -n 12
+```
+
+GitHub's [Hello World exercise](https://docs.github.com/en/get-started/start-your-journey/hello-world) provides an additional beginner walkthrough of repositories, branches, commits, and pull requests.
+
+### 6.9 Avoid common beginner problems
+
+- Run `git status` before and after each important operation.
+- Pull before editing shared branches and push completed commits before switching workstations.
+- Do not edit the same lines concurrently in multiple copies of the repository.
+- Do not commit `.venv`, caches, generated files, credentials, or sandbox connection details.
+- Do not download a repository as a ZIP when you need Git history and future synchronization; clone it instead.
+- Do not confuse **commit** with **push**. A commit exists locally until it is pushed.
+- Do not confuse `git pull` with a **pull request**. The command updates a local branch; the GitHub feature proposes a reviewed merge.
+- Read an error message before retrying. Repeating `push`, `pull`, or authentication commands rarely corrects an unexplained problem.
+
+Use these inspection commands when uncertain:
+
+```bash
+git status
+git remote -v
+git branch -vv
+git log --oneline --graph --decorate --all -n 20
+gh auth status
+```
+
+---
+
+## Part 7: Use common Visual Studio Code features
 
 Start VS Code with the project folder as the workspace:
 
@@ -530,7 +804,7 @@ code .
 
 If VS Code asks whether you trust the authors, confirm only because this lab folder came from your instructor and you have already reviewed its files.
 
-### 6.1 Install course extensions
+### 7.1 Install course extensions
 
 Open Extensions with `Ctrl+Shift+X`. Search for and install:
 
@@ -546,7 +820,7 @@ code --install-extension ms-python.vscode-pylance
 
 Install extensions only from publishers approved for the course. Extensions run code with the permissions of your user account.
 
-### 6.2 Explore the interface
+### 7.2 Explore the interface
 
 Use the Activity Bar on the left to open these views:
 
@@ -563,7 +837,7 @@ pwd
 git status
 ```
 
-### 6.3 Select the project interpreter
+### 7.3 Select the project interpreter
 
 Open the Command Palette with `Ctrl+Shift+P`. Run **Python: Select Interpreter** and choose the interpreter inside `.venv`.
 
@@ -575,7 +849,7 @@ python -c "import sys; print(sys.executable)"
 
 The printed path must contain the current project and `.venv`.
 
-### 6.4 Edit, search, format, and navigate
+### 7.4 Edit, search, format, and navigate
 
 Open `verify_workstation.py` and practice:
 
@@ -591,7 +865,7 @@ Open `verify_workstation.py` and practice:
 
 Hover over `yaml.safe_load` and `requests.__version__` to view type and documentation information supplied by the language service.
 
-### 6.5 Run and debug Python
+### 7.5 Run and debug Python
 
 Open `verify_workstation.py`. Click in the margin beside the line:
 
@@ -612,7 +886,7 @@ While paused:
 
 Remove the breakpoint by clicking it again.
 
-### 6.6 Review Git changes visually
+### 7.6 Review Git changes visually
 
 In `inventory.yaml`, change `training-lab` to `devnet-classroom` and save the file. Open Source Control with `Ctrl+Shift+G`, then select the changed file to see a side-by-side diff.
 
@@ -626,7 +900,7 @@ The working tree should be clean.
 
 ---
 
-## Part 7: Introduction to Cisco DevNet Sandbox
+## Part 8: Introduction to Cisco DevNet Sandbox
 
 Cisco DevNet Sandbox provides hosted Cisco products and topologies for learning, development, API testing, and automation. The catalog and specific lab versions change over time, so search the current catalog rather than relying only on a remembered lab name.
 
@@ -641,7 +915,7 @@ For this course, use a **reservation-based sandbox whenever the exercise changes
 
 Cisco's current documentation states that reservation labs are private, usually require VPN access, and cannot be saved for a later reservation. Availability and provisioning time vary. See the [DevNet Sandbox getting-started guide](https://developer.cisco.com/docs/sandbox/getting-started/), [first reservation guide](https://developer.cisco.com/docs/sandbox/first-reservation-guide/), and [sandbox FAQ](https://developer.cisco.com/docs/sandbox/faqs/).
 
-### 7.1 Sign in and inspect the catalog
+### 8.1 Sign in and inspect the catalog
 
 1. Open [Cisco DevNet Sandbox](https://developer.cisco.com/sandbox/).
 2. Select **Get Started with Sandbox** and sign in with your Cisco.com account.
@@ -653,7 +927,7 @@ For the enterprise-networking and API portions of this course, prefer the curren
 
 If that sandbox is unavailable, select another reservable environment that supports the learning objective, such as a current model-driven networking or Cisco platform sandbox. Record the exact sandbox name and version because endpoints and credentials differ between environments.
 
-### 7.2 Make a reservation
+### 8.2 Make a reservation
 
 1. Select the chosen sandbox's **Reserve** action.
 2. Choose a start time that allows for provisioning before the class activity.
@@ -664,7 +938,7 @@ If that sandbox is unavailable, select another reservable environment that suppo
 
 Reservation capacity is finite. Coordinate times with the instructor and cancel reservations that will not be used.
 
-### 7.3 Locate the lab information
+### 8.3 Locate the lab information
 
 Open the active reservation from **Lab Management > Reservations**. Locate and review:
 
@@ -678,7 +952,7 @@ Open the active reservation from **Lab Management > Reservations**. Locate and r
 
 Do not copy sandbox credentials into source code, screenshots, Git commits, chat systems, or shared documents.
 
-### 7.4 Connect through the VPN
+### 8.4 Connect through the VPN
 
 Most reservable environments use a VPN because their resources have private addresses. Use the Cisco Secure Client/AnyConnect download and instructions provided with the reservation when available.
 
@@ -723,7 +997,7 @@ If connectivity fails, check in this order:
 6. A local or organizational firewall is not blocking the required VPN or application traffic.
 7. The Instructions and Output panels do not report a provisioning failure.
 
-### 7.5 Record a safe sandbox profile
+### 8.5 Record a safe sandbox profile
 
 Create a file that records non-secret context only:
 
@@ -749,7 +1023,7 @@ git add .gitignore
 git commit -m "Ignore temporary sandbox profile"
 ```
 
-### 7.6 Disconnect and release resources
+### 8.6 Disconnect and release resources
 
 When the exploration is complete:
 
@@ -761,7 +1035,7 @@ When the exploration is complete:
 
 ---
 
-## Part 8: Final validation
+## Part 9: Final validation
 
 From the project directory, activate the environment and run the final checks:
 
@@ -772,6 +1046,8 @@ python verify_workstation.py
 python -m pip check
 git status
 git log --oneline --graph --decorate --all
+git remote -v
+gh auth status
 code --version
 ```
 
@@ -781,6 +1057,8 @@ Your lab is complete when all of the following are true:
 - The project uses the Python executable inside `.venv`.
 - `verify_workstation.py` runs successfully.
 - Git contains the intended commits and reports a clean working tree.
+- The private GitHub repository contains the pushed Lab 01 commits.
+- You can explain and perform clone, pull, status, add, commit, push, branch, and pull-request operations.
 - VS Code uses the `.venv` interpreter and can run the program under the debugger.
 - You can explain where to find a reservation's topology, instructions, output, credentials, and end time.
 - You reserved or identified a suitable reservable DevNet Sandbox and understand its VPN requirement.
@@ -813,6 +1091,12 @@ deactivate
 | Install Python dependencies | `python -m pip install -r requirements.txt` |
 | Leave the environment | `deactivate` |
 | Inspect Git state | `git status`, `git diff`, `git log` |
+| Clone a GitHub repository | `git clone HTTPS_URL` |
+| Download remote information | `git fetch origin` |
+| Update the current branch | `git pull --ff-only` |
+| Publish local commits | `git push` |
+| Create and switch to a branch | `git switch -c BRANCH_NAME` |
+| Check GitHub authentication | `gh auth status` |
 | Open the current folder in VS Code | `code .` |
 
 ## Further references
@@ -821,8 +1105,10 @@ deactivate
 - [Python virtual environments](https://docs.python.org/3/library/venv.html)
 - [pip user guide](https://pip.pypa.io/en/stable/user_guide/)
 - [Git reference](https://git-scm.com/docs)
+- [GitHub account setup](https://docs.github.com/en/get-started/onboarding/getting-started-with-your-github-account)
+- [GitHub Git basics](https://docs.github.com/en/get-started/git-basics)
+- [GitHub pull requests](https://docs.github.com/en/pull-requests)
 - [Visual Studio Code documentation](https://code.visualstudio.com/docs)
 - [Cisco DevNet Sandbox getting started](https://developer.cisco.com/docs/sandbox/getting-started/)
 - [Cisco DevNet first reservation guide](https://developer.cisco.com/docs/sandbox/first-reservation-guide/)
 - [Cisco Catalyst Center sandboxes](https://developer.cisco.com/docs/catalyst-center/sandboxes/)
-
