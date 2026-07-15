@@ -33,6 +33,7 @@ Do not erase the device configuration, modify management connectivity, or save t
 lab05/
 ├── Lab5.md
 ├── requirements.txt
+├── .env.example
 ├── device.yaml
 ├── common.py
 ├── show_interfaces.py
@@ -88,29 +89,39 @@ Replace the placeholders with current reservation values.
 
 Open `device.yaml`. Replace only the placeholder `host` and `port` values with the router details from the reservation. Do not add a username or password to YAML.
 
-Export credentials in the current terminal:
+Create a local credential file from the supplied template:
 
 ```bash
-read -rp "Sandbox username: " LAB_USERNAME
-read -srp "Sandbox password: " LAB_PASSWORD
-echo
-export LAB_USERNAME LAB_PASSWORD
+cp .env.example .env
+chmod 600 .env
+code .env
 ```
 
-If the device requires a separate enable secret:
+Replace the placeholder values with credentials from the current reservation:
+
+```dotenv
+LAB_USERNAME='your-reservation-username'
+LAB_PASSWORD='your-reservation-password'
+LAB_SECRET=''
+```
+
+If the device requires a separate enable secret, set `LAB_SECRET`; otherwise leave it empty. Quoting values prevents characters such as spaces or `#` from being interpreted as dotenv syntax; `python-dotenv` removes the surrounding quotes when loading the value.
+
+The scripts use `python-dotenv` to load `.env` into process environment variables. Confirm that the keys exist without displaying their secret values:
 
 ```bash
-read -srp "Enable secret: " LAB_SECRET
-echo
-export LAB_SECRET
+python - <<'PY'
+import os
+from dotenv import load_dotenv
+
+load_dotenv()
+print("Username configured:", bool(os.getenv("LAB_USERNAME")))
+print("Password configured:", bool(os.getenv("LAB_PASSWORD")))
+print("Enable secret configured:", bool(os.getenv("LAB_SECRET")))
+PY
 ```
 
-The variables exist only in this shell and are not committed. Confirm their presence without printing their values:
-
-```bash
-test -n "$LAB_USERNAME" && echo "Username is set"
-test -n "$LAB_PASSWORD" && echo "Password is set"
-```
+`.gitignore` excludes `.env`, while `.env.example` documents the required variable names without containing credentials. Verify this before the first commit with `git status --ignored`.
 
 Review the ten loopbacks in `device.yaml`. They use addresses from the non-public benchmarking range `198.18.0.0/15`, `/32` masks, and a common lab description. If the sandbox instructions prohibit this range or these interface IDs, coordinate an approved alternative with the instructor and update the YAML before running configuration.
 
@@ -259,10 +270,10 @@ python show_interfaces.py --output artifacts/interfaces-cleanup.json
 
 Verify that the ten lab loopbacks no longer appear. The cleanup script reads the same YAML source of truth and generates only `no interface Loopback<ID>` commands.
 
-Remove credentials from the shell:
+Remove the temporary credential file after the reservation if the workstation is shared or the credentials are no longer needed:
 
 ```bash
-unset LAB_USERNAME LAB_PASSWORD LAB_SECRET
+rm .env
 ```
 
 Disconnect from the sandbox VPN when no longer needed and release unused reservation time.
@@ -273,14 +284,14 @@ Confirm that artifacts and credentials are not staged:
 
 ```bash
 git status
-git add .gitignore Lab5.md requirements.txt device.yaml \
+git add .gitignore .env.example Lab5.md requirements.txt device.yaml \
   common.py show_interfaces.py configure_loopbacks.py cleanup_loopbacks.py
 git diff --staged
 git commit -m "Automate IOS XE loopbacks with Netmiko and TextFSM"
 gh repo create devnet-associate-lab05 --private --source=. --remote=origin --push
 ```
 
-On GitHub, verify that `.env`, `.venv`, `artifacts`, passwords, and sandbox VPN details are absent.
+On GitHub, verify that `.env`, `.venv`, `artifacts`, passwords, and sandbox VPN details are absent. Only `.env.example` should be present.
 
 ## Completion criteria
 

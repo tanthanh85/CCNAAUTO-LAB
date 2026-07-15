@@ -7,10 +7,12 @@ import os
 from pathlib import Path
 
 import yaml
+from dotenv import load_dotenv
 from netmiko import ConnectHandler
 
 
 CONFIG_PATH = Path(__file__).with_name("device.yaml")
+ENV_PATH = Path(__file__).with_name(".env")
 
 
 def load_lab() -> tuple[dict, list[dict]]:
@@ -54,11 +56,12 @@ def load_lab() -> tuple[dict, list[dict]]:
 
 
 def connection_parameters(device: dict) -> dict:
-    """Combine non-secret YAML metadata with credentials from the environment."""
+    """Combine non-secret YAML metadata with credentials loaded from .env."""
+    load_dotenv(ENV_PATH)
     username = os.environ.get("LAB_USERNAME")
     password = os.environ.get("LAB_PASSWORD")
     if not username or not password:
-        raise ValueError("Set LAB_USERNAME and LAB_PASSWORD")
+        raise ValueError("Set LAB_USERNAME and LAB_PASSWORD in the local .env file")
     parameters = {
         "device_type": device["device_type"],
         "host": device["host"],
@@ -85,4 +88,3 @@ def connect():
 def interface_names(loopbacks: list[dict]) -> set[str]:
     """Return the exact interface names managed by this lab."""
     return {f"Loopback{item['id']}" for item in loopbacks}
-
