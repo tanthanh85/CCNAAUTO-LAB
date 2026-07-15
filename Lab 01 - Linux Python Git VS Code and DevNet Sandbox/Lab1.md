@@ -16,7 +16,7 @@ This lab prepares the Ubuntu 26.04 LTS workstation for the course. Work quickly 
 - Register and secure a GitHub account, then clone, pull, commit, and push.
 - Identify and reserve a Cisco DevNet reservation-based sandbox.
 
-## Part 1: Essential Linux commands — 20 minutes
+## Part 1: Essential Linux commands
 
 Open Terminal and run:
 
@@ -51,7 +51,7 @@ curl -I https://developer.cisco.com/
 
 Use `command --help` or `man command` before guessing options. Confirm the current directory before using `rm`.
 
-## Part 2: Install and verify tools — 20 minutes
+## Part 2: Install and verify tools
 
 ```bash
 sudo apt update
@@ -79,7 +79,7 @@ git config --global init.defaultBranch main
 git config --global core.editor "code --wait"
 ```
 
-## Part 3: Virtual environment and Python check — 20 minutes
+## Part 3: Virtual environment and Python check
 
 Copy the supplied Lab 1 folder to `~/devnet-associate/labs/lab01`, then run:
 
@@ -96,7 +96,7 @@ python -m pip check
 
 The interpreter path must contain `.venv`. Leave the environment with `deactivate`; reactivate it with `source .venv/bin/activate`.
 
-## Part 4: VS Code essentials — 15 minutes
+## Part 4: VS Code essentials
 
 ```bash
 code --install-extension ms-python.python
@@ -114,7 +114,7 @@ In VS Code:
 6. Add a breakpoint beside a Python statement and press `F5` to debug.
 7. Open Source Control with `Ctrl+Shift+G` to review changes.
 
-## Part 5: GitHub account and everyday workflow — 25 minutes
+## Part 5: GitHub account and everyday workflow
 
 Register at [GitHub](https://github.com/), verify the email address, enable two-factor authentication, and store recovery codes securely. Use a private repository for course code. Never commit passwords, API tokens, VPN credentials, or private keys.
 
@@ -166,7 +166,7 @@ To clone on another workstation:
 git clone https://github.com/YOUR-USERNAME/devnet-associate-lab01.git
 ```
 
-## Part 6: DevNet Sandbox introduction — 15 minutes
+## Part 6: DevNet Sandbox introduction
 
 1. Open [Cisco DevNet Sandbox](https://developer.cisco.com/sandbox/) and sign in.
 2. Set the correct account time zone.
@@ -187,7 +187,7 @@ For an active reservation, locate:
 
 Use Cisco Secure Client instructions supplied with the reservation. OpenConnect may be used only when authorized by the instructor. Never store sandbox credentials in GitHub.
 
-## Part 7: Final check — 5 minutes
+## Part 7: Final check
 
 ```bash
 source ~/devnet-associate/labs/lab01/.venv/bin/activate

@@ -22,7 +22,7 @@ In this lab, you will build a small device-inventory report using Python's core 
 - `inventory_report_starter.py`: starting script.
 - `validate_lab2.py`: automated completion check.
 
-## Part 1: Prepare the project — 15 minutes
+## Part 1: Prepare the project
 
 ```bash
 mkdir -p ~/devnet-associate/labs
@@ -51,7 +51,7 @@ print(type(hostname), type(port), type(enabled))
 PY
 ```
 
-## Part 2: Create the inventory data — 20 minutes
+## Part 2: Create the inventory data
 
 Replace TODO 1 in `inventory_report.py`:
 
@@ -91,7 +91,7 @@ devices = [
 
 The tuple stores a fixed coordinate pair. The list is an ordered collection, each dictionary represents a device, and `None` represents an unavailable measurement.
 
-## Part 3: Validate input — 20 minutes
+## Part 3: Validate input
 
 Replace TODO 2:
 
@@ -114,7 +114,7 @@ while True:
 
 Test blank, invalid, zero, and valid input.
 
-## Part 4: Build the report — 35 minutes
+## Part 4: Build the report
 
 Replace TODO 3 and TODO 4:
 
@@ -178,7 +178,7 @@ Run with a threshold of `10`:
 python inventory_report.py
 ```
 
-## Part 5: Validate and publish — 30 minutes
+## Part 5: Validate and publish
 
 ```bash
 python -m py_compile inventory_report.py

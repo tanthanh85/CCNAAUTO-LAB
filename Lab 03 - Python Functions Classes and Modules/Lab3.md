@@ -15,7 +15,7 @@ You will complete a small `netinventory` package by implementing reusable functi
 - Import local modules through a package interface.
 - Run unit tests and publish through GitHub.
 
-## Part 1: Prepare and test — 15 minutes
+## Part 1: Prepare and test
 
 ```bash
 mkdir -p ~/devnet-associate/labs
@@ -32,7 +32,7 @@ python -m unittest discover -v
 
 Failures are expected because the starter code contains `NotImplementedError` placeholders.
 
-## Part 2: Implement formatting functions — 20 minutes
+## Part 2: Implement formatting functions
 
 In `netinventory/formatters.py`, implement:
 
@@ -63,7 +63,7 @@ Run:
 python -m unittest -v tests.test_netinventory.FormatterTests
 ```
 
-## Part 3: Implement the `Device` class — 25 minutes
+## Part 3: Implement the `Device` class
 
 In `netinventory/models.py`, replace the class placeholders:
 
@@ -99,7 +99,7 @@ Run:
 python -m unittest -v tests.test_netinventory.DeviceTests
 ```
 
-## Part 4: Implement the composed inventory — 25 minutes
+## Part 4: Implement the composed inventory
 
 In `netinventory/services.py`, implement:
 
@@ -134,7 +134,7 @@ def __len__(self) -> int:
 python -m unittest -v tests.test_netinventory.InventoryTests
 ```
 
-## Part 5: Complete package imports and application — 20 minutes
+## Part 5: Complete package imports and application
 
 Replace `netinventory/__init__.py`:
 
@@ -173,7 +173,7 @@ python app.py
 python -m unittest discover -v
 ```
 
-## Part 6: Commit and publish — 15 minutes
+## Part 6: Commit and publish
 
 ```bash
 git add .gitignore Lab3.md app.py netinventory tests notes.md

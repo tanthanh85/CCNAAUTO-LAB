@@ -17,7 +17,7 @@ You will parse equivalent device inventories from CSV, JSON, YAML, and XML, norm
 - Handle expected errors and run unit tests.
 - Publish the project through GitHub.
 
-## Part 1: Prepare and compare data — 20 minutes
+## Part 1: Prepare and compare data
 
 ```bash
 mkdir -p ~/devnet-associate/labs
@@ -43,7 +43,7 @@ head -40 data/devices.xml
 
 CSV fields are text. JSON and YAML provide native Booleans. XML elements also produce text and require conversion. `xmltodict` maps common XML trees into dictionaries and lists.
 
-## Part 2: Implement format parsers — 40 minutes
+## Part 2: Implement format parsers
 
 In `data_pipeline.py`, implement the Boolean converter:
 
@@ -118,7 +118,7 @@ python -m unittest -v \
   tests.test_data_pipeline.XmlTests
 ```
 
-## Part 3: Validate and normalize — 35 minutes
+## Part 3: Validate and normalize
 
 Implement:
 
@@ -182,7 +182,7 @@ Run:
 python -m unittest discover -v
 ```
 
-## Part 4: Complete output and validate — 25 minutes
+## Part 4: Complete output and validate
 
 Implement `write_json()`:
 
