@@ -14,7 +14,7 @@ Lab 7 expressed intent as YAML, rendered device-specific CLI, and transported th
 - Explore a YANG tree and identify list keys, namespaces, and data types.
 - Use YANG Suite to derive and test a RESTCONF URI and JSON payload.
 - Create, verify, and remove ten loopbacks with Python `requests`.
-- interpret common RESTCONF response codes and troubleshoot safely.
+- Interpret common RESTCONF response codes and troubleshoot safely.
 
 ## Required environment
 
@@ -231,3 +231,11 @@ git push
 - [Cisco YANG Suite documentation](https://developer.cisco.com/docs/yangsuite/)
 - [Cisco YANG Suite source repository](https://github.com/CiscoDevNet/yangsuite)
 - [Cisco IOS XE RESTCONF API documentation](https://developer.cisco.com/docs/ios-xe/)
+
+## Key takeaways
+
+- YANG describes the structure, types, constraints, and keys used to address model-driven configuration and state data.
+- YANG Suite helps derive an operation's exact RESTCONF URI and payload from models supported by the current device.
+- RESTCONF uses standard HTTPS methods and status codes while exchanging YANG-modeled data.
+- Model names, revisions, augmentations, and leaf choices can vary, so copied URIs must be verified against the target router.
+- TLS validation, response-body inspection, pre-checks, and ownership-aware cleanup are essential parts of API automation.

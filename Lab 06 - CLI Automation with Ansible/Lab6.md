@@ -16,6 +16,15 @@ This lab repeats the operational objectives of Lab 5 using Ansible. You will con
 - Use assertions, check mode, diffs, post-checks, and bounded cleanup.
 - Publish the reusable project to a private GitHub repository.
 
+```mermaid
+flowchart LR
+    A["Inventory and group variables"] --> B["Ansible playbook"]
+    B --> C["network_cli connection"]
+    C --> D["IOS XE router"]
+    D --> E["Parsed operational state"]
+    E --> F["Assertions and local artifacts"]
+```
+
 ## Required environment
 
 - Ubuntu workstation prepared in Lab 1.
@@ -274,3 +283,10 @@ Confirm on GitHub that `.env`, `.venv`, artifacts, passwords, and sandbox VPN de
 - [`ansible.utils.cli_parse`](https://docs.ansible.com/projects/ansible/latest/collections/ansible/utils/cli_parse_module.html)
 - [`cisco.ios.ios_config`](https://docs.ansible.com/projects/ansible/latest/collections/cisco/ios/ios_config_module.html)
 
+## Key takeaways
+
+- Ansible inventory identifies managed nodes, variables describe intent, and playbooks define ordered tasks.
+- Network collections provide device-aware modules instead of requiring learners to script an SSH dialogue.
+- Assertions and check mode expose unsafe or unexpected conditions before configuration is applied.
+- Idempotent modules describe the desired state and avoid unnecessary changes when that state already exists.
+- Parsed post-checks and cleanup ownership checks are as important in Ansible as in Python automation.

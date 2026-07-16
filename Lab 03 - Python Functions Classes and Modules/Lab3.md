@@ -1,8 +1,8 @@
 # Lab 3: Python Functions, Classes, and Modules
 
-## Duration and alignment
+## Duration
 
-**Duration:** 2 hours  
+**2 hours**
 
 You will complete a small `netinventory` package by implementing reusable functions, a `Device` class, and an `Inventory` service.
 
@@ -13,6 +13,21 @@ You will complete a small `netinventory` package by implementing reusable functi
 - Use composition to build an inventory from device objects.
 - Import local modules through a package interface.
 - Run unit tests and publish through GitHub.
+
+The package separates responsibilities so that each component can be understood and tested independently:
+
+```mermaid
+flowchart TD
+    A["app.py"] --> B["netinventory package interface"]
+    B --> C["Device model"]
+    B --> D["Inventory service"]
+    B --> E["Formatting functions"]
+    D --> C
+    C --> E
+    F["Unit tests"] --> C
+    F --> D
+    F --> E
+```
 
 ## Part 1: Prepare and test
 
@@ -191,3 +206,10 @@ git status
 - `app.py` imports through the package interface.
 - The private GitHub repository contains the completed project.
 
+## Key takeaways
+
+- Functions package reusable behavior behind clear parameters and return values.
+- Classes combine validated state with related behavior; modules and packages organize those definitions.
+- Composition allows an `Inventory` to contain `Device` objects without claiming that an inventory is a device.
+- A small public package interface makes imports clearer and reduces coupling to internal file locations.
+- Unit tests let developers change one component while checking that existing behavior remains intact.

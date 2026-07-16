@@ -1,4 +1,5 @@
 import json
+import ipaddress
 import os
 from pathlib import Path
 from urllib.parse import quote
@@ -15,6 +16,19 @@ def load_data():
     data = yaml.safe_load((ROOT / "restconf.yaml").read_text())
     if len(data["loopbacks"]) != 10:
         raise ValueError("Define exactly ten loopbacks")
+    names, addresses = set(), set()
+    for item in data["loopbacks"]:
+        name = item.get("name")
+        if name not in {f"Loopback{number}" for number in range(801, 811)}:
+            raise ValueError("Define Loopback801 through Loopback810 exactly once")
+        address = ipaddress.IPv4Address(item.get("ipv4"))
+        if item.get("netmask") != "255.255.255.255":
+            raise ValueError(f"{name} must use a 255.255.255.255 mask")
+        if not str(item.get("description", "")).startswith("LAB8_"):
+            raise ValueError(f"{name} requires a LAB8_ description")
+        if name in names or address in addresses:
+            raise ValueError("Loopback names and addresses must be unique")
+        names.add(name); addresses.add(address)
     return data
 
 def session_and_base(data):

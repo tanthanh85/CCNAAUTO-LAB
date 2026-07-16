@@ -16,6 +16,15 @@ This lab prepares the Ubuntu 26.04 LTS workstation for the course. Work quickly 
 - Register and secure a GitHub account, then clone, pull, commit, and push.
 - Identify and reserve a Cisco DevNet reservation-based sandbox.
 
+The workstation, source-control service, editor, and sandbox form the working environment used throughout the course:
+
+```mermaid
+flowchart LR
+    A["Ubuntu workstation"] --> B["VS Code and Python virtual environment"]
+    B <--> C["Private GitHub repository"]
+    B -->|"VPN and management APIs"| D["Reservable DevNet Sandbox"]
+```
+
 ## Part 1: Essential Linux commands
 
 Open Terminal and run:
@@ -180,7 +189,7 @@ Reservation sandboxes are preferred for this course because they are private and
 For an active reservation, locate:
 
 - Instructions and topology.
-- Output/provisioning window.
+- Reservation status and provisioning output.
 - VPN server and temporary credentials.
 - Controller/device addresses and attributes.
 - Reservation end time.
@@ -214,3 +223,10 @@ gh auth status
 - [VS Code documentation](https://code.visualstudio.com/docs)
 - [Cisco DevNet Sandbox getting started](https://developer.cisco.com/docs/sandbox/getting-started/)
 
+## Key takeaways
+
+- A Python virtual environment isolates each lab's dependencies from the operating system and other projects.
+- Git records local history; GitHub stores and shares the private remote repository.
+- VS Code combines editing, terminal, debugging, and source-control workflows in one interface.
+- Reservable sandboxes are appropriate for configuration labs because they provide isolated resources and temporary credentials.
+- Credentials, virtual environments, and generated files must remain outside source control.

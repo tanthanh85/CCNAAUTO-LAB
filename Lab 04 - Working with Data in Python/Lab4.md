@@ -1,8 +1,8 @@
 # Lab 4: Working with Data in Python
 
-## Duration and alignment
+## Duration
 
-**Duration:** 2 hours  
+**2 hours**
 
 You will parse equivalent device inventories from CSV, JSON, YAML, and XML, normalize them, validate them, and confirm equivalence with unit tests. XML is parsed with `xmltodict`.
 
@@ -15,6 +15,19 @@ You will parse equivalent device inventories from CSV, JSON, YAML, and XML, norm
 - Validate required fields, IP addresses, and duplicates.
 - Handle expected errors and run unit tests.
 - Publish the project through GitHub.
+
+Although the source syntax differs, each parser feeds the same normalization and validation pipeline:
+
+```mermaid
+flowchart LR
+    A["CSV"] --> E["Format parser"]
+    B["JSON"] --> E
+    C["YAML"] --> E
+    D["XML"] --> E
+    E --> F["Normalize fields and types"]
+    F --> G["Validate addresses and uniqueness"]
+    G --> H["Consistent Python structures"]
+```
 
 ## Part 1: Prepare and compare data
 
@@ -219,3 +232,10 @@ git status
 - JSON output test passes.
 - The private GitHub repository contains no environment or cache files.
 
+## Key takeaways
+
+- CSV and XML commonly require explicit text-to-type conversion, while JSON and YAML can preserve native Booleans and numbers.
+- Parsing converts syntax into Python structures; validation determines whether the resulting data is acceptable.
+- `yaml.safe_load()` avoids constructing arbitrary Python objects from untrusted YAML.
+- `xmltodict` makes common XML structures approachable while preserving the need to understand hierarchy and repeated elements.
+- Normalization gives downstream automation one consistent representation regardless of the source format.

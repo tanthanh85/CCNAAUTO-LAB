@@ -16,6 +16,16 @@ In this lab, you will connect to a private Cisco IOS XE reservable sandbox with 
 - Perform pre-check, change, post-check, and cleanup operations.
 - Store code and non-sensitive evidence in a private GitHub repository.
 
+```mermaid
+flowchart LR
+    A["YAML intent"] --> B["Validate metadata"]
+    B --> C["TextFSM pre-check"]
+    C --> D["Review generated CLI"]
+    D --> E["Netmiko configuration"]
+    E --> F["TextFSM post-check"]
+    F --> G["Ownership-aware cleanup"]
+```
+
 ## Required environment
 
 - Ubuntu workstation prepared in Lab 1.
@@ -302,3 +312,11 @@ On GitHub, verify that `.env`, `.venv`, `artifacts`, passwords, and sandbox VPN 
 - [Netmiko documentation](https://ktbyers.github.io/netmiko/)
 - [NTC Templates](https://github.com/networktocode/ntc-templates)
 - [TextFSM](https://github.com/google/textfsm)
+
+## Key takeaways
+
+- Netmiko provides a Python interface to interactive network-device CLI sessions over SSH.
+- TextFSM converts familiar command output into records that code can filter and compare reliably.
+- Configuration data belongs outside Python logic, while credentials belong outside both code and Git.
+- A safe change includes validation, dry run, pre-check, deployment, post-check, and controlled cleanup.
+- Configuration output alone is not proof of success; verified device state is the stronger result.

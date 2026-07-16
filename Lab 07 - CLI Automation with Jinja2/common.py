@@ -18,6 +18,8 @@ def load_inventory():
     names, addresses = set(), set()
     for item in items:
         name = f"Loopback{item['id']}"
+        if not isinstance(item["id"], int) or not 701 <= item["id"] <= 710:
+            raise ValueError("Loopback IDs must be integers from 701 through 710")
         address = ipaddress.ip_interface(item["ipv4"])
         if address.version != 4 or address.network.prefixlen != 32:
             raise ValueError(f"{name} must use an IPv4 /32")
@@ -26,6 +28,8 @@ def load_inventory():
         if name in names or str(address.ip) in addresses:
             raise ValueError("Interface names and addresses must be unique")
         names.add(name); addresses.add(str(address.ip))
+    if names != {f"Loopback{number}" for number in range(701, 711)}:
+        raise ValueError("Define Loopback701 through Loopback710 exactly once")
     return data
 
 

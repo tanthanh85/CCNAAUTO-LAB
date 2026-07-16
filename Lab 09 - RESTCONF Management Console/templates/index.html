@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>IOS XE Operations Console</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.9/dist/chart.umd.min.js" defer></script>
+  <script src="{{ url_for('static', filename='app.js') }}" defer></script>
+</head>
+<body>
+<header><div><span class="eyebrow">DEVNET OPERATIONS</span><h1>IOS XE Management Console</h1></div><div class="status"><i></i><span id="status">Ready</span></div></header>
+<nav>
+  <button class="tab active" data-tab="dashboard">Dashboard</button>
+  <button class="tab" data-tab="routes">Static routes</button>
+  <button class="tab" data-tab="loopbacks">Loopbacks</button>
+  <button class="tab" data-tab="inventory">Inventory</button>
+  <label>Router <select id="routerSelect"></select></label>
+  <label>Refresh <select id="refresh"><option value="5">5 sec</option><option value="10">10 sec</option><option value="30">30 sec</option><option value="0">Off</option></select></label>
+</nav>
+<main>
+  <section id="dashboard" class="panel active"><div class="title"><div><h2>GigabitEthernet1</h2><p>Rates calculated from consecutive RESTCONF octet counters.</p></div><button class="secondary" id="refreshNow">Refresh now</button></div>
+    <div class="metrics"><article><span>Input rate</span><strong id="inRate">—</strong><small id="inPct">—</small></article><article><span>Output rate</span><strong id="outRate">—</strong><small id="outPct">—</small></article></div>
+    <div class="chart"><canvas id="trafficChart"></canvas></div></section>
+  <section id="routes" class="panel"><div class="title"><div><h2>Static routes</h2><p>Default route creation and deletion are blocked by both browser and server.</p></div><button id="deleteRoutes" class="danger">Delete selected</button></div>
+    <form id="routeForm" class="bulk"><textarea id="routeEntries" placeholder="One per line: prefix,mask,next-hop&#10;192.0.2.0,255.255.255.0,198.51.100.1" required></textarea><button>Add routes</button></form>
+    <div class="table"><table><thead><tr><th><input type="checkbox" data-checkall="route"></th><th>Prefix</th><th>Mask</th><th>Next hop</th></tr></thead><tbody id="routeRows"></tbody></table></div><div id="routePager" class="pager"></div></section>
+  <section id="loopbacks" class="panel"><div class="title"><div><h2>Loopback interfaces</h2><p>Loopback0 is visible but permanently protected.</p></div><button id="deleteLoopbacks" class="danger">Delete selected</button></div>
+    <form id="loopbackForm" class="bulk"><textarea id="loopbackEntries" placeholder="One per line: number,address,mask,description&#10;901,198.18.9.1,255.255.255.255,LAB9_MANAGED" required></textarea><button>Add loopbacks</button></form>
+    <div class="table"><table><thead><tr><th><input type="checkbox" data-checkall="loopback"></th><th>Number</th><th>Address</th><th>Mask</th><th>Description</th></tr></thead><tbody id="loopbackRows"></tbody></table></div><div id="loopbackPager" class="pager"></div></section>
+  <section id="inventory" class="panel"><div class="title"><div><h2>Router inventory</h2><p>Passwords are encrypted at rest and never returned to the browser.</p></div></div>
+    <form id="inventoryForm" class="grid"><label>Name<input name="name" required></label><label>IP address<input name="ip" required></label><label>Username<input name="username" required></label><label>Password<input name="password" type="password" required></label><label>SSH port<input name="ssh_port" type="number" value="22" required></label><label>RESTCONF port<input name="restconf_port" type="number" value="443" required></label><button>Add router</button></form>
+    <div class="table"><table><thead><tr><th>Name</th><th>IP address</th><th>Username</th><th>SSH</th><th>RESTCONF</th><th></th></tr></thead><tbody id="inventoryRows"></tbody></table></div><div id="inventoryPager" class="pager"></div></section>
+</main>
+<div id="toast" role="alert"></div>
+</body></html>

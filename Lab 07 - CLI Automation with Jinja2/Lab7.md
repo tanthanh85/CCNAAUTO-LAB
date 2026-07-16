@@ -139,3 +139,11 @@ git push
 - [Jinja template designer documentation](https://jinja.palletsprojects.com/en/stable/templates/)
 - [Netmiko documentation](https://ktbyers.github.io/netmiko/)
 - [Cisco IOS XE reservable sandboxes](https://developer.cisco.com/docs/ios-xe-voip/sandbox/)
+
+## Key takeaways
+
+- Jinja2 separates reusable CLI structure from device-specific intent data.
+- A loop inside the template renders repeated configuration blocks without Python assembling each command.
+- `StrictUndefined` turns missing variables into visible failures instead of silently generating incomplete CLI.
+- Rendering to an artifact creates a useful review boundary before Netmiko changes a device.
+- Templates improve consistency, but pre-checks, verification, and ownership-aware cleanup remain necessary.

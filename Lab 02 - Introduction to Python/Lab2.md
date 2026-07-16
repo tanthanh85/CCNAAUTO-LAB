@@ -1,8 +1,8 @@
 # Lab 2: Introduction to Python for Network Automation
 
-## Duration and alignment
+## Duration
 
-**Duration:** 2 hours  
+**2 hours**
 
 In this lab, you will build a small device-inventory report using Python's core data types, input conversion, conditions, and loops.
 
@@ -15,6 +15,15 @@ In this lab, you will build a small device-inventory report using Python's core 
 - Use `if`, `for`, `while`, `break`, and `continue`.
 - Validate numeric user input.
 - Commit and push the completed program to GitHub.
+
+The program follows a simple input-process-output flow. Validation keeps unsuitable input out of the reporting logic:
+
+```mermaid
+flowchart LR
+    A["Device data and threshold input"] --> B["Type conversion and validation"]
+    B --> C["Conditions and loops"]
+    C --> D["Inventory report and summary"]
+```
 
 ## Files
 
@@ -199,3 +208,10 @@ Confirm on GitHub that `.venv` and cache files were not uploaded.
 - No credential is present in the repository.
 - The private GitHub repository contains the completed script.
 
+## Key takeaways
+
+- Python data types represent different kinds of network information and influence the operations that can be performed safely.
+- Conditions select behavior, while loops repeat work across devices or retry attempts.
+- User input arrives as text and must be converted and validated before use.
+- Lists and dictionaries provide a practical foundation for representing a small network inventory.
+- Small validation scripts provide quick, repeatable evidence that a program behaves as intended.
