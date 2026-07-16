@@ -1,0 +1,7 @@
+{% for loopback in loopbacks %}
+interface Loopback{{ loopback.id }}
+ description {{ loopback.description }}
+ ip address {{ loopback.ipv4 | address }} {{ loopback.ipv4 | netmask }}
+ no shutdown
+!
+{% endfor %}

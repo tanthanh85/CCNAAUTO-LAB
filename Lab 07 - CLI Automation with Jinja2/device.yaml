@@ -1,0 +1,15 @@
+device:
+  device_type: cisco_ios
+  host: REPLACE_WITH_SANDBOX_ADDRESS
+  port: 22
+loopbacks:
+  - {id: 701, ipv4: 198.18.7.1/32, description: LAB7_JINJA2_01}
+  - {id: 702, ipv4: 198.18.7.2/32, description: LAB7_JINJA2_02}
+  - {id: 703, ipv4: 198.18.7.3/32, description: LAB7_JINJA2_03}
+  - {id: 704, ipv4: 198.18.7.4/32, description: LAB7_JINJA2_04}
+  - {id: 705, ipv4: 198.18.7.5/32, description: LAB7_JINJA2_05}
+  - {id: 706, ipv4: 198.18.7.6/32, description: LAB7_JINJA2_06}
+  - {id: 707, ipv4: 198.18.7.7/32, description: LAB7_JINJA2_07}
+  - {id: 708, ipv4: 198.18.7.8/32, description: LAB7_JINJA2_08}
+  - {id: 709, ipv4: 198.18.7.9/32, description: LAB7_JINJA2_09}
+  - {id: 710, ipv4: 198.18.7.10/32, description: LAB7_JINJA2_10}

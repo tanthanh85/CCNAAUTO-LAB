@@ -1,0 +1,18 @@
+device:
+  host: REPLACE_WITH_SANDBOX_ADDRESS
+  port: 443
+restconf:
+  # Confirm these model-derived URIs in YANG Suite before applying changes.
+  interface_collection_uri: /restconf/data/ietf-interfaces:interfaces
+  interface_item_uri: /restconf/data/ietf-interfaces:interfaces/interface={name}
+loopbacks:
+  - {name: Loopback801, ipv4: 198.18.8.1, netmask: 255.255.255.255, description: LAB8_RESTCONF_01}
+  - {name: Loopback802, ipv4: 198.18.8.2, netmask: 255.255.255.255, description: LAB8_RESTCONF_02}
+  - {name: Loopback803, ipv4: 198.18.8.3, netmask: 255.255.255.255, description: LAB8_RESTCONF_03}
+  - {name: Loopback804, ipv4: 198.18.8.4, netmask: 255.255.255.255, description: LAB8_RESTCONF_04}
+  - {name: Loopback805, ipv4: 198.18.8.5, netmask: 255.255.255.255, description: LAB8_RESTCONF_05}
+  - {name: Loopback806, ipv4: 198.18.8.6, netmask: 255.255.255.255, description: LAB8_RESTCONF_06}
+  - {name: Loopback807, ipv4: 198.18.8.7, netmask: 255.255.255.255, description: LAB8_RESTCONF_07}
+  - {name: Loopback808, ipv4: 198.18.8.8, netmask: 255.255.255.255, description: LAB8_RESTCONF_08}
+  - {name: Loopback809, ipv4: 198.18.8.9, netmask: 255.255.255.255, description: LAB8_RESTCONF_09}
+  - {name: Loopback810, ipv4: 198.18.8.10, netmask: 255.255.255.255, description: LAB8_RESTCONF_10}
