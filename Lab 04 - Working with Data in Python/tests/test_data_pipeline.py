@@ -1,4 +1,4 @@
-"""Unit tests for the Lab 4 data pipeline."""
+"""Tests for the beginner Lab 4 data workflow."""
 
 import json
 import tempfile
@@ -6,106 +6,75 @@ import unittest
 from pathlib import Path
 
 from data_pipeline import (
-    load_devices,
-    normalize_device,
+    build_report,
+    count_roles,
+    enabled_devices,
     parse_bool,
-    parse_csv,
-    parse_json,
-    parse_xml,
-    parse_yaml,
-    validate_devices,
-    write_json,
+    read_csv,
+    read_devices,
+    read_json,
+    read_xml,
+    read_yaml,
+    write_report,
 )
-
 
 ROOT = Path(__file__).parents[1]
 DATA = ROOT / "data"
 
 
-class CsvTests(unittest.TestCase):
+class ReaderTests(unittest.TestCase):
     def test_parse_bool(self):
         self.assertIs(parse_bool(" TRUE "), True)
         self.assertIs(parse_bool("false"), False)
         with self.assertRaises(ValueError):
             parse_bool("yes")
 
-    def test_csv_converts_boolean(self):
-        records = parse_csv(DATA / "devices.csv")
-        self.assertEqual(len(records), 3)
-        self.assertIs(records[0]["enabled"], True)
-        self.assertIs(records[2]["enabled"], False)
+    def test_csv(self):
+        devices = read_csv(DATA / "devices.csv")
+        self.assertEqual(len(devices), 3)
+        self.assertIs(devices[0]["enabled"], True)
+
+    def test_json(self):
+        self.assertEqual(read_json(DATA / "devices.json")[0]["name"], "edge-r1")
+
+    def test_yaml(self):
+        self.assertEqual(read_yaml(DATA / "devices.yaml")[1]["role"], "switch")
+
+    def test_xml(self):
+        devices = read_xml(DATA / "devices.xml")
+        self.assertEqual(devices[2]["platform"], "ftd")
+        self.assertIs(devices[2]["enabled"], False)
+
+    def test_reader_selection(self):
+        for filename in ("devices.csv", "devices.json", "devices.yaml", "devices.xml"):
+            self.assertEqual(len(read_devices(DATA / filename)), 3)
+        with self.assertRaises(ValueError):
+            read_devices(DATA / "devices.txt")
 
 
-class JsonTests(unittest.TestCase):
-    def test_json_devices(self):
-        records = parse_json(DATA / "devices.json")
-        self.assertEqual(records[0]["name"], "edge-r1")
-
-
-class YamlTests(unittest.TestCase):
-    def test_yaml_devices(self):
-        records = parse_yaml(DATA / "devices.yaml")
-        self.assertEqual(records[1]["role"], "switch")
-
-
-class XmlTests(unittest.TestCase):
-    def test_xml_devices(self):
-        records = parse_xml(DATA / "devices.xml")
-        self.assertEqual(records[2]["platform"], "ftd")
-        self.assertIs(records[2]["enabled"], False)
-
-
-class ValidationTests(unittest.TestCase):
+class ProcessingTests(unittest.TestCase):
     def setUp(self):
-        self.valid_record = {
-            "name": " EDGE-R1 ",
-            "management_ip": "192.0.2.10",
-            "role": " Router ",
-            "platform": " IOSXE ",
-            "enabled": True,
-            "site": " Hanoi ",
-        }
+        self.devices = read_json(DATA / "devices.json")
 
-    def test_normalizes_record(self):
-        device = normalize_device(self.valid_record)
-        self.assertEqual(device["name"], "edge-r1")
-        self.assertEqual(device["role"], "router")
-        self.assertEqual(device["site"], "hanoi")
+    def test_extract_enabled_devices(self):
+        self.assertEqual(
+            [item["name"] for item in enabled_devices(self.devices)],
+            ["edge-r1", "access-sw1"],
+        )
 
-    def test_rejects_missing_unknown_and_invalid_fields(self):
-        missing = self.valid_record.copy()
-        missing.pop("role")
-        with self.assertRaises(ValueError):
-            normalize_device(missing)
-        unknown = self.valid_record | {"password": "must-not-appear"}
-        with self.assertRaises(ValueError):
-            normalize_device(unknown)
-        invalid_ip = self.valid_record | {"management_ip": "999.1.1.1"}
-        with self.assertRaises(ValueError):
-            normalize_device(invalid_ip)
+    def test_count_roles(self):
+        self.assertEqual(count_roles(self.devices), {"router": 1, "switch": 1, "firewall": 1})
 
-    def test_rejects_duplicates(self):
-        with self.assertRaises(ValueError):
-            validate_devices([self.valid_record, self.valid_record.copy()])
-
-
-class PipelineTests(unittest.TestCase):
-    def test_all_formats_are_equivalent(self):
-        results = [
-            load_devices(DATA / name)
-            for name in ("devices.csv", "devices.json", "devices.yaml", "devices.xml")
-        ]
-        self.assertTrue(all(result == results[0] for result in results[1:]))
-
-    def test_write_json_round_trip(self):
-        devices = load_devices(DATA / "devices.yaml")
+    def test_build_and_write_report(self):
+        report = build_report(self.devices, DATA / "devices.json")
+        self.assertEqual(report["device_count"], 3)
+        self.assertEqual(report["enabled_count"], 2)
         with tempfile.TemporaryDirectory() as directory:
-            output = Path(directory) / "nested" / "devices.json"
-            write_json(output, devices)
-            document = json.loads(output.read_text(encoding="utf-8"))
-        self.assertEqual(document, {"devices": devices})
+            destination = Path(directory) / "nested" / "report.json"
+            write_report(destination, report)
+            saved = json.loads(destination.read_text(encoding="utf-8"))
+        self.assertEqual(saved, report)
 
 
 if __name__ == "__main__":
     unittest.main()
-

@@ -116,24 +116,14 @@ The tests demonstrate four expected results: a normal IPv4 static route is accep
 Trace one bulk request through the application:
 
 ```mermaid
-sequenceDiagram
-    participant B as Browser
-    participant F as Flask API
-    participant V as Policy validation
-    participant X as RESTCONF adapter
-    participant R as IOS XE
-    B->>F: POST routes/bulk
-    F->>V: Validate every entry first
-    alt Any entry is default or malformed
-        V-->>B: 400; no RESTCONF calls
-    else All entries are valid
-        loop Each route
-            F->>X: PUT route
-            X->>R: HTTPS RESTCONF request
-            R-->>X: HTTP result
-        end
-        F-->>B: Processed count
-    end
+flowchart TD
+    A["Browser submits a bulk request"] --> B["Flask validates every entry"]
+    B --> C{"Are all entries permitted?"}
+    C --> D["Rejected request: return HTTP 400"]
+    D --> E["Make no RESTCONF calls"]
+    C --> F["Approved request: send each RESTCONF operation"]
+    F --> G["IOS XE processes the changes"]
+    G --> H["Return the processed count"]
 ```
 
 Pre-validating the entire batch prevents an invalid fifth entry from being discovered after four earlier entries have already changed the router. Device-side failures can still produce a partial batch because RESTCONF calls are independent transactions. A production system would add rollback or use a transactional datastore when available.

@@ -1,14 +1,22 @@
 # Lab 4 observations
 
-## Format comparison
+- Input formats tested:
+- Syntax check result:
+- Unit test result:
+- Device count:
+- Enabled device count:
+- Output files created:
 
-Complete during Part 2.
+## Data types observed
 
-## Exception behavior
+Record one example of each type found in the lab:
 
-Complete during Part 9.
+- String:
+- Integer:
+- Boolean:
+- List:
+- Dictionary:
 
-## TDD evidence
+## File-processing result
 
-Record the failing test, smallest implementation, and refactoring performed in Part 10.
-
+Describe one difference between reading CSV or XML and reading JSON or YAML.

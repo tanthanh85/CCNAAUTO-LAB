@@ -1,14 +1,23 @@
-# Lab 3 design notes
+# Lab 3 observations
 
-## Composition and defensive copying
+## Functions
 
-Complete during Part 4.
+- A function is useful because:
+- One parameter used in this lab:
+- One returned value used in this lab:
 
-## Inheritance versus composition
+## Modules
 
-Complete during Part 5.
+- A module is useful because:
+- One import used in this lab:
 
-## Function and class design review
+## Classes and objects
 
-Complete during Part 8.
+- A class is:
+- An object is:
+- One attribute used in this lab:
+- One method used in this lab:
 
+## Composition
+
+Explain why the `Inventory` object contains `Device` objects.

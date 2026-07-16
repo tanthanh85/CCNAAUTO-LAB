@@ -22,13 +22,15 @@ Lab 9 ran the Flask management console directly from a Python virtual environmen
 
 ```mermaid
 flowchart LR
-    B["Learner browser"] -->|"127.0.0.1:8000"| P["Published container port"]
-    P --> G["Gunicorn and Flask<br/>non-root container"]
-    G --> V["Named volume<br/>encrypted SQLite inventory"]
-    G -->|"HTTPS RESTCONF<br/>through host VPN route"]| R["Reservable IOS XE router"]
-    E["Local .env and optional CA file"] -->|"runtime injection"| G
+    B["Learner browser"] --> P["Local port 8000"]
+    P --> G["Gunicorn and Flask container"]
     I["Docker image"] --> G
+    E["Environment variables and CA file"] --> G
+    G --> V["Encrypted inventory volume"]
+    G --> R["Reservable IOS XE router"]
 ```
+
+The browser reaches the console through `127.0.0.1:8000`. Docker creates the container from the image, injects runtime settings, and mounts persistent inventory storage. RESTCONF requests leave the container through the workstation's sandbox VPN route to the reserved IOS XE router.
 
 ## Required environment
 
