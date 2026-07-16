@@ -1,0 +1,14 @@
+all:
+  hosts:
+    iosxe_router:
+      ansible_host: REPLACE_WITH_RESERVED_ROUTER_ADDRESS
+      ansible_port: 22
+  vars:
+    ansible_connection: ansible.netcommon.network_cli
+    ansible_network_os: cisco.ios.ios
+    ansible_user: "{{ lookup('env', 'LAB_USERNAME') }}"
+    ansible_password: "{{ lookup('env', 'LAB_PASSWORD') }}"
+    ansible_become: true
+    ansible_become_method: enable
+    ansible_become_password: "{{ lookup('env', 'LAB_SECRET') }}"
+

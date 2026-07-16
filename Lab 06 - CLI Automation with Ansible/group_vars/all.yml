@@ -1,0 +1,12 @@
+loopbacks:
+  - {id: 601, ipv4: 198.18.6.1/32, description: LAB6_ANSIBLE_01}
+  - {id: 602, ipv4: 198.18.6.2/32, description: LAB6_ANSIBLE_02}
+  - {id: 603, ipv4: 198.18.6.3/32, description: LAB6_ANSIBLE_03}
+  - {id: 604, ipv4: 198.18.6.4/32, description: LAB6_ANSIBLE_04}
+  - {id: 605, ipv4: 198.18.6.5/32, description: LAB6_ANSIBLE_05}
+  - {id: 606, ipv4: 198.18.6.6/32, description: LAB6_ANSIBLE_06}
+  - {id: 607, ipv4: 198.18.6.7/32, description: LAB6_ANSIBLE_07}
+  - {id: 608, ipv4: 198.18.6.8/32, description: LAB6_ANSIBLE_08}
+  - {id: 609, ipv4: 198.18.6.9/32, description: LAB6_ANSIBLE_09}
+  - {id: 610, ipv4: 198.18.6.10/32, description: LAB6_ANSIBLE_10}
+

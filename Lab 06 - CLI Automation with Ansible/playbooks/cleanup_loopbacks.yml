@@ -1,0 +1,33 @@
+---
+- name: Remove only YAML-defined Lab 6 loopbacks
+  hosts: iosxe_router
+  gather_facts: false
+
+  tasks:
+    - name: Read each requested loopback configuration
+      cisco.ios.ios_command:
+        commands:
+          - "show running-config interface Loopback{{ item.id }}"
+      loop: "{{ loopbacks }}"
+      loop_control:
+        label: "Loopback{{ item.id }}"
+      register: loopback_running
+
+    - name: Refuse cleanup when the exact lab description is absent
+      ansible.builtin.assert:
+        that:
+          - '("description " ~ item.item.description) in item.stdout[0]'
+        fail_msg: >-
+          Refusing to remove Loopback{{ item.item.id }} because its exact
+          LAB6 description was not found.
+      loop: "{{ loopback_running.results }}"
+      loop_control:
+        label: "Loopback{{ item.item.id }}"
+
+    - name: Remove YAML-defined loopbacks
+      cisco.ios.ios_config:
+        lines:
+          - "no interface Loopback{{ item.id }}"
+      loop: "{{ loopbacks }}"
+      loop_control:
+        label: "Loopback{{ item.id }}"

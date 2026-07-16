@@ -1,0 +1,40 @@
+---
+- name: Parse IOS XE interface summary
+  hosts: iosxe_router
+  gather_facts: false
+  vars:
+    artifact_name: interfaces-before.json
+
+  tasks:
+    - name: Run and parse show ip interface brief
+      ansible.utils.cli_parse:
+        command: show ip interface brief
+        parser:
+          name: ansible.netcommon.ntc_templates
+        set_fact: interfaces
+
+    - name: Confirm structured records were returned
+      ansible.builtin.assert:
+        that:
+          - interfaces is sequence
+          - interfaces is not string
+        fail_msg: TextFSM did not return a structured sequence.
+
+    - name: Display parsed interfaces
+      ansible.builtin.debug:
+        var: interfaces
+
+    - name: Create local artifact directory
+      ansible.builtin.file:
+        path: "{{ playbook_dir }}/../artifacts"
+        state: directory
+        mode: "0700"
+      delegate_to: localhost
+
+    - name: Save parsed interfaces locally
+      ansible.builtin.copy:
+        content: "{{ interfaces | to_nice_json }}\n"
+        dest: "{{ playbook_dir }}/../artifacts/{{ artifact_name }}"
+        mode: "0600"
+      delegate_to: localhost
+

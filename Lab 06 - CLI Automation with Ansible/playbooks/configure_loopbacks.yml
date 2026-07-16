@@ -1,0 +1,67 @@
+---
+- name: Configure YAML-defined IOS XE loopbacks
+  hosts: iosxe_router
+  gather_facts: false
+
+  tasks:
+    - name: Validate loopback count and values
+      ansible.builtin.assert:
+        that:
+          - loopbacks | length == 10
+          - loopbacks | map(attribute='id') | unique | length == 10
+          - loopbacks | map(attribute='ipv4') | unique | length == 10
+          - item.id | int >= 601
+          - item.id | int <= 610
+          - item.ipv4 is match('^198\\.18\\.6\\.[0-9]+/32$')
+          - item.description is match('^LAB6_')
+        fail_msg: "Invalid loopback metadata: {{ item }}"
+      loop: "{{ loopbacks }}"
+      loop_control:
+        label: "Loopback{{ item.id }}"
+
+    - name: Run and parse interface pre-check
+      ansible.utils.cli_parse:
+        command: show ip interface brief
+        parser:
+          name: ansible.netcommon.ntc_templates
+        set_fact: interfaces_before
+
+    - name: Build existing interface-name list
+      ansible.builtin.set_fact:
+        existing_interface_names: >-
+          {{ (existing_interface_names | default([])) +
+             [item.interface | default(item.intf | default(''))] }}
+      loop: "{{ interfaces_before }}"
+
+    - name: Read each requested loopback configuration
+      cisco.ios.ios_command:
+        commands:
+          - "show running-config interface Loopback{{ item.id }}"
+      loop: "{{ loopbacks }}"
+      loop_control:
+        label: "Loopback{{ item.id }}"
+      register: requested_running
+
+    - name: Refuse to take ownership of an unrelated existing loopback
+      ansible.builtin.assert:
+        that:
+          - >-
+            ("Loopback" ~ (item.item.id | string)) not in existing_interface_names
+            or ("description " ~ item.item.description) in item.stdout[0]
+        fail_msg: >-
+          Loopback{{ item.item.id }} already exists without the exact LAB6
+          description; refusing replacement.
+      loop: "{{ requested_running.results }}"
+      loop_control:
+        label: "Loopback{{ item.item.id }}"
+
+    - name: Configure YAML-defined loopbacks
+      cisco.ios.ios_config:
+        parents: "interface Loopback{{ item.id }}"
+        lines:
+          - "description {{ item.description }}"
+          - "ip address {{ item.ipv4.split('/')[0] }} 255.255.255.255"
+          - no shutdown
+      loop: "{{ loopbacks }}"
+      loop_control:
+        label: "Loopback{{ item.id }}"
