@@ -1,4 +1,4 @@
-# Lab 1: Linux, Python, GitHub, VS Code, and DevNet Sandbox
+# Lab 1: Get Started
 
 ## Duration
 

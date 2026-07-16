@@ -1,4 +1,4 @@
-# Lab 5: IOS XE CLI Automation with Netmiko and TextFSM
+# Lab 5: CLI Automation with Netmiko
 
 ## Duration
 
@@ -47,7 +47,7 @@ Copy the project and install its dependencies:
 
 ```bash
 mkdir -p ~/devnet-associate/labs
-cp -R "/path/to/Lab 05 - IOS XE CLI Automation with Netmiko" \
+cp -R "/path/to/Lab 05 - CLI Automation with Netmiko" \
   ~/devnet-associate/labs/lab05
 cd ~/devnet-associate/labs/lab05
 python3 -m venv .venv
