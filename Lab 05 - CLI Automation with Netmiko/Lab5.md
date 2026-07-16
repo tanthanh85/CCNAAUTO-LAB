@@ -76,14 +76,6 @@ In the sandbox portal:
 2. Open its topology and Instructions panel.
 3. Identify one IOS XE router that permits SSH configuration.
 4. Connect the workstation to the reservation VPN.
-5. Test the assigned address and SSH port only:
-
-```bash
-ip route
-nc -vz ROUTER_ADDRESS SSH_PORT
-```
-
-Replace the placeholders with current reservation values.
 
 ## Part 2: Set device metadata and credentials
 
