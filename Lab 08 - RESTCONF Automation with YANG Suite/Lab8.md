@@ -148,6 +148,8 @@ Do not execute a modifying request in YANG Suite until the URI and payload have 
 ## 5. Prepare and inspect the Python project
 
 ```bash
+cd ~/devnet-associate
+git pull --ff-only
 cp -R "/path/to/Lab 08 - RESTCONF Automation with YANG Suite" \
   ~/devnet-associate/labs/lab08
 cd ~/devnet-associate/labs/lab08
@@ -208,7 +210,7 @@ python cleanup_loopbacks.py --apply
 python verify_loopbacks.py
 ```
 
-The final `Missing` list should contain all ten lab interfaces. Confirm `.env`, CA material, and runtime artifacts are ignored, then commit the reusable code to the private course repository:
+The final `Missing` list should contain all ten lab interfaces. Restore the device `host` in `restconf.yaml` to `REPLACE_WITH_RESERVED_ROUTER_ADDRESS`. Confirm `.env`, CA material, and runtime artifacts are ignored, then commit the reusable code to the public GitHub course repository:
 
 ```bash
 git add .

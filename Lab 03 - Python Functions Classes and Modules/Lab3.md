@@ -57,14 +57,14 @@ The supplied Python files contain `NotImplementedError` placeholders. Replace ea
 
 ```bash
 mkdir -p ~/devnet-associate/labs
+cd ~/devnet-associate
+git pull --ff-only
 cp -R "/path/to/Lab 03 - Python Functions Classes and Modules" \
   ~/devnet-associate/labs/lab03
 cd ~/devnet-associate/labs/lab03
 python3 -m venv .venv
 source .venv/bin/activate
 printf '%s\n' '.venv/' '__pycache__/' '*.py[cod]' > .gitignore
-git init
-git branch -M main
 code .
 ```
 
@@ -350,7 +350,7 @@ git status
 git add .gitignore Lab3.md app.py netinventory tests notes.md
 git diff --staged
 git commit -m "Complete beginner functions modules and classes lab"
-gh repo create devnet-associate-lab03 --private --source=. --remote=origin --push
+git push
 git status
 ```
 

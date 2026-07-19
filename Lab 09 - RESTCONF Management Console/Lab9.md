@@ -60,6 +60,8 @@ lab09/
 Use a private, reservable IOS XE sandbox with RESTCONF enabled. Connect the sandbox VPN, but do not add the router to the application yet.
 
 ```bash
+cd ~/devnet-associate
+git pull --ff-only
 cp -R "/path/to/Lab 09 - RESTCONF Management Console" \
   ~/devnet-associate/labs/lab09
 cd ~/devnet-associate/labs/lab09

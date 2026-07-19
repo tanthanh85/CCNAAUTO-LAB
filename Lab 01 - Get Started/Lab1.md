@@ -10,7 +10,7 @@ This lab prepares the Ubuntu 26.04 LTS workstation for the course. Work quickly 
 
 - Use essential Linux navigation, file, search, network, and help commands.
 - Make a small edit with Nano or Vim.
-- Install and verify Python, pip, Git, GitHub CLI, and VS Code.
+- Install and verify Python, pip, Git, and VS Code.
 - Create and use a Python virtual environment.
 - Use common VS Code development features.
 - Register and secure a GitHub account, then clone, pull, commit, and push.
@@ -21,7 +21,7 @@ The workstation, source-control service, editor, and sandbox form the working en
 ```mermaid
 flowchart LR
     A["Ubuntu workstation"] --> B["VS Code and Python virtual environment"]
-    B <--> C["Private GitHub repository"]
+    B <--> C["Public GitHub course repository"]
     B -->|"VPN and management APIs"| D["Reservable DevNet Sandbox"]
 ```
 
@@ -34,8 +34,8 @@ whoami
 hostnamectl
 cat /etc/os-release
 pwd
-mkdir -p ~/devnet-associate/labs/linux-practice
-cd ~/devnet-associate/labs/linux-practice
+mkdir -p ~/linux-practice
+cd ~/linux-practice
 touch router.txt
 printf 'hostname: edge-r1\nmanagement_ip: 192.0.2.10\n' > router.txt
 cat router.txt
@@ -65,7 +65,7 @@ Use `command --help` or `man command` before guessing options. Confirm the curre
 ```bash
 sudo apt update
 sudo apt install -y \
-  python3 python3-pip python3-venv git gh curl jq nano vim openssh-client
+  python3 python3-pip python3-venv git curl jq nano vim openssh-client
 sudo snap install code --classic
 ```
 
@@ -75,7 +75,6 @@ If Snap is unavailable, follow the official VS Code Ubuntu installation instruct
 python3 --version
 python3 -m pip --version
 git --version
-gh --version
 code --version
 ```
 
@@ -90,10 +89,11 @@ git config --global core.editor "code --wait"
 
 ## Part 3: Virtual environment and Python check
 
-Copy the supplied Lab 1 folder to `~/devnet-associate/labs/lab01`, then run:
+Copy the supplied Lab 1 folder to a temporary working directory, then run:
 
 ```bash
-cd ~/devnet-associate/labs/lab01
+cp -R "/path/to/Lab 01 - Get Started" ~/lab01-work
+cd ~/lab01-work
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
@@ -125,29 +125,34 @@ In VS Code:
 
 ## Part 5: GitHub account and everyday workflow
 
-Register at [GitHub](https://github.com/), verify the email address, enable two-factor authentication, and store recovery codes securely. Use a private repository for course code. Never commit passwords, API tokens, VPN credentials, or private keys.
+Register at [GitHub](https://github.com/), verify the email address, enable two-factor authentication, and store recovery codes securely. For this beginner course, use one public repository for all labs. A public repository can be read by anyone, so never commit passwords, API tokens, VPN credentials, `.env` files, private keys, or real customer information.
 
-Authenticate through the browser:
+Create the course repository using the github.com interface:
+
+1. Sign in at [github.com](https://github.com/).
+2. Select the **+** menu and choose **New repository**.
+3. Enter `devnet-associate-labs` as the repository name.
+4. Select **Public**.
+5. Select **Add a README file** so that the new repository can be cloned immediately.
+6. Select **Create repository**.
+7. On the repository page, select **Code**, choose **HTTPS**, and copy the displayed URL.
+
+Clone the repository and place Lab 1 inside it:
 
 ```bash
-gh auth login
-gh auth status
-```
-
-Choose GitHub.com, HTTPS, and browser login.
-
-Initialize and publish Lab 1:
-
-```bash
+cd ~
+git clone https://github.com/YOUR-USERNAME/devnet-associate-labs.git devnet-associate
+mkdir -p ~/devnet-associate/labs/lab01
+cp -R ~/lab01-work/. ~/devnet-associate/labs/lab01/
 cd ~/devnet-associate/labs/lab01
 printf '%s\n' '.venv/' '__pycache__/' '*.py[cod]' > .gitignore
-git init
-git branch -M main
 git add Lab1.md requirements.txt verify_workstation.py inventory.yaml .gitignore
 git diff --staged
 git commit -m "Complete Lab 1 workstation setup"
-gh repo create devnet-associate-lab01 --private --source=. --remote=origin --push
+git push
 ```
+
+If Git requests authentication, follow the browser sign-in prompt. GitHub account passwords cannot be used for HTTPS Git operations; use the browser or credential-manager flow presented by Git and VS Code.
 
 Practice the common workflow:
 
@@ -172,7 +177,7 @@ Key meanings:
 To clone on another workstation:
 
 ```bash
-git clone https://github.com/YOUR-USERNAME/devnet-associate-lab01.git
+git clone https://github.com/YOUR-USERNAME/devnet-associate-labs.git
 ```
 
 ## Part 6: DevNet Sandbox introduction
@@ -203,7 +208,6 @@ source ~/devnet-associate/labs/lab01/.venv/bin/activate
 python verify_workstation.py
 git status
 git remote -v
-gh auth status
 ```
 
 ## Completion criteria
@@ -211,7 +215,7 @@ gh auth status
 - The workstation tools report valid versions.
 - The Python verification program succeeds inside `.venv`.
 - VS Code uses the project interpreter and debugger.
-- Lab 1 is pushed to a private GitHub repository.
+- Lab 1 is pushed to the public GitHub course repository.
 - The learner can explain clone, pull, commit, push, and pull request.
 - A suitable reservable DevNet sandbox has been identified.
 - No credential is stored in Git or project files.
@@ -226,7 +230,7 @@ gh auth status
 ## Key takeaways
 
 - A Python virtual environment isolates each lab's dependencies from the operating system and other projects.
-- Git records local history; GitHub stores and shares the private remote repository.
+- Git records local history; GitHub stores and shares the public course repository.
 - VS Code combines editing, terminal, debugging, and source-control workflows in one interface.
 - Reservable sandboxes are appropriate for configuration labs because they provide isolated resources and temporary credentials.
 - Credentials, virtual environments, and generated files must remain outside source control.

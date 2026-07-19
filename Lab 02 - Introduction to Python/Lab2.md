@@ -34,14 +34,14 @@ flowchart LR
 
 ```bash
 mkdir -p ~/devnet-associate/labs
+cd ~/devnet-associate
+git pull --ff-only
 cp -R "/path/to/Lab 02 - Introduction to Python" ~/devnet-associate/labs/lab02
 cd ~/devnet-associate/labs/lab02
 python3 -m venv .venv
 source .venv/bin/activate
 cp inventory_report_starter.py inventory_report.py
 printf '%s\n' '.venv/' '__pycache__/' '*.py[cod]' > .gitignore
-git init
-git branch -M main
 code .
 ```
 
@@ -194,7 +194,7 @@ python validate_lab2.py
 git add .gitignore Lab2.md inventory_report.py inventory_report_starter.py validate_lab2.py
 git diff --staged
 git commit -m "Complete introductory Python inventory report"
-gh repo create devnet-associate-lab02 --private --source=. --remote=origin --push
+git push
 git status
 ```
 
@@ -206,7 +206,7 @@ Confirm on GitHub that `.venv` and cache files were not uploaded.
 - The report uses the required data types, conditions, and loops.
 - Invalid threshold input does not terminate the program.
 - No credential is present in the repository.
-- The private GitHub repository contains the completed script.
+- The public GitHub course repository contains the completed script.
 
 ## Key takeaways
 

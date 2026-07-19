@@ -54,6 +54,8 @@ lab04/
 
 ```bash
 mkdir -p ~/devnet-associate/labs
+cd ~/devnet-associate
+git pull --ff-only
 cp -R "/path/to/Lab 04 - Working with Data in Python" \
   ~/devnet-associate/labs/lab04
 cd ~/devnet-associate/labs/lab04
@@ -62,8 +64,6 @@ source .venv/bin/activate
 python -m pip install --upgrade pip
 python -m pip install -r requirements.txt
 printf '%s\n' '.venv/' '__pycache__/' '*.py[cod]' 'output/' > .gitignore
-git init
-git branch -M main
 code .
 ```
 
@@ -334,7 +334,7 @@ git status --ignored
 git add .gitignore Lab4.md requirements.txt data data_pipeline.py tests observations.md
 git diff --staged
 git commit -m "Complete beginner Python file processing lab"
-gh repo create devnet-associate-lab04 --private --source=. --remote=origin --push
+git push
 git status
 ```
 

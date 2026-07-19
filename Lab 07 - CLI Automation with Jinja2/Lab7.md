@@ -39,6 +39,8 @@ lab07/
 ## 1. Prepare the project
 
 ```bash
+cd ~/devnet-associate
+git pull --ff-only
 cp -R "/path/to/Lab 07 - CLI Automation with Jinja2" ~/devnet-associate/labs/lab07
 cd ~/devnet-associate/labs/lab07
 python3 -m venv .venv
@@ -118,7 +120,7 @@ python cleanup_loopbacks.py --apply
 python verify_interfaces.py
 ```
 
-After cleanup, all ten interfaces should appear in `Missing`. Review `git status` and confirm that `.env` and runtime artifacts are ignored. Commit the reusable files to the private GitHub repository created in Lab 1:
+After cleanup, all ten interfaces should appear in `Missing`. Restore the `host` value in `device.yaml` to `REPLACE_WITH_RESERVED_ROUTER_ADDRESS`, review `git status`, and confirm that `.env` and runtime artifacts are ignored. Commit the reusable files to the public GitHub course repository created in Lab 1:
 
 ```bash
 git add .

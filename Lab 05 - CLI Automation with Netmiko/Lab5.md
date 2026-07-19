@@ -14,7 +14,7 @@ In this lab, you will connect to a private Cisco IOS XE reservable sandbox with 
 - Load and validate loopback metadata from YAML.
 - Generate interface configuration with a Python `for` loop.
 - Perform pre-check, change, post-check, and cleanup operations.
-- Store code and non-sensitive evidence in a private GitHub repository.
+- Store code and non-sensitive evidence in the public GitHub course repository.
 
 ```mermaid
 flowchart LR
@@ -57,6 +57,8 @@ Copy the project and install its dependencies:
 
 ```bash
 mkdir -p ~/devnet-associate/labs
+cd ~/devnet-associate
+git pull --ff-only
 cp -R "/path/to/Lab 05 - CLI Automation with Netmiko" \
   ~/devnet-associate/labs/lab05
 cd ~/devnet-associate/labs/lab05
@@ -75,8 +77,6 @@ printf '%s\n' \
   '*.py[cod]' \
   '.env' \
   'artifacts/' > .gitignore
-git init
-git branch -M main
 code .
 ```
 
@@ -284,13 +284,15 @@ Disconnect from the sandbox VPN when no longer needed and release unused reserva
 
 Confirm that artifacts and credentials are not staged:
 
+Before staging, restore the `host` value in `device.yaml` to `REPLACE_WITH_RESERVED_ROUTER_ADDRESS`. Keep the reusable port only if it is not reservation-specific.
+
 ```bash
 git status
 git add .gitignore .env.example Lab5.md requirements.txt device.yaml \
   common.py show_interfaces.py configure_loopbacks.py cleanup_loopbacks.py
 git diff --staged
 git commit -m "Automate IOS XE loopbacks with Netmiko and TextFSM"
-gh repo create devnet-associate-lab05 --private --source=. --remote=origin --push
+git push
 ```
 
 On GitHub, verify that `.env`, `.venv`, `artifacts`, passwords, and sandbox VPN details are absent. Only `.env.example` should be present.
@@ -304,7 +306,7 @@ On GitHub, verify that `.env`, `.venv`, `artifacts`, passwords, and sandbox VPN 
 - The loop creates and verifies `Loopback501` through `Loopback510`.
 - Cleanup removes all ten interfaces.
 - Credentials and sandbox-specific evidence are not committed.
-- The private GitHub repository contains the Lab 5 code.
+- The public GitHub course repository contains the Lab 5 code.
 
 ## Further references
 

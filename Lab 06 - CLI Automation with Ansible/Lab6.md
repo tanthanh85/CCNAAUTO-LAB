@@ -14,7 +14,7 @@ This lab repeats the operational objectives of Lab 5 using Ansible. You will con
 - Store loopback intent in YAML variables.
 - Configure repeated resources with an Ansible loop.
 - Use assertions, check mode, diffs, post-checks, and bounded cleanup.
-- Publish the reusable project to a private GitHub repository.
+- Publish the reusable project to the public GitHub course repository.
 
 ```mermaid
 flowchart LR
@@ -58,6 +58,8 @@ lab06/
 
 ```bash
 mkdir -p ~/devnet-associate/labs
+cd ~/devnet-associate
+git pull --ff-only
 cp -R "/path/to/Lab 06 - CLI Automation with Ansible" \
   ~/devnet-associate/labs/lab06
 cd ~/devnet-associate/labs/lab06
@@ -79,8 +81,6 @@ printf '%s\n' \
   '.env' \
   'artifacts/' \
   '*.retry' > .gitignore
-git init
-git branch -M main
 code .
 ```
 
@@ -254,13 +254,15 @@ Disconnect the sandbox VPN and release unused reservation time.
 
 ## Part 8: Commit and publish
 
+Before staging, restore `ansible_host` in `inventory.yml` to `REPLACE_WITH_RESERVED_ROUTER_ADDRESS` and restore the default SSH port if the reservation used a temporary port.
+
 ```bash
 git status --ignored
 git add .gitignore .env.example Lab6.md ansible.cfg inventory.yml \
   requirements.txt collections group_vars playbooks run-playbook.sh
 git diff --staged
 git commit -m "Automate IOS XE loopbacks with Ansible"
-gh repo create devnet-associate-lab06 --private --source=. --remote=origin --push
+git push
 ```
 
 Confirm on GitHub that `.env`, `.venv`, artifacts, passwords, and sandbox VPN details are absent.
