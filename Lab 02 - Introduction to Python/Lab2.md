@@ -32,12 +32,13 @@ flowchart LR
 
 ## Part 1: Prepare the project
 
+On github.com, select **+ > New repository**, enter `devnet-associate-lab02`, select **Public**, add a README, and select **Create repository**. On the new repository page, select **Code > HTTPS** and copy the URL. Then clone it and add the supplied starter files:
+
 ```bash
-mkdir -p ~/devnet-associate/labs
-cd ~/devnet-associate
-git pull --ff-only
-cp -R "/path/to/Lab 02 - Introduction to Python" ~/devnet-associate/labs/lab02
-cd ~/devnet-associate/labs/lab02
+cd ~
+git clone https://github.com/YOUR-USERNAME/devnet-associate-lab02.git
+cp -R "/path/to/Lab 02 - Introduction to Python/." ~/devnet-associate-lab02/
+cd ~/devnet-associate-lab02
 python3 -m venv .venv
 source .venv/bin/activate
 cp inventory_report_starter.py inventory_report.py
@@ -206,7 +207,7 @@ Confirm on GitHub that `.venv` and cache files were not uploaded.
 - The report uses the required data types, conditions, and loops.
 - Invalid threshold input does not terminate the program.
 - No credential is present in the repository.
-- The public GitHub course repository contains the completed script.
+- The public Lab 2 GitHub repository contains the completed script.
 
 ## Key takeaways
 

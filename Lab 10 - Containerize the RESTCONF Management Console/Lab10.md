@@ -36,24 +36,28 @@ The browser reaches the console through `127.0.0.1:8000`. Docker creates the con
 
 - The Ubuntu workstation prepared in Lab 1.
 - Docker Engine and the Docker Compose plugin installed in Lab 8.
-- The completed Lab 9 folder next to the Lab 10 folder.
+- The completed `devnet-associate-lab09` repository next to the Lab 10 repository.
 - A private, reservable IOS XE sandbox with RESTCONF enabled.
 - The sandbox VPN connected before testing router operations.
 
-The supplied build uses the Lab 9 directory as its build context. Keep these two course folders adjacent and retain their original names:
+The supplied build uses the Lab 9 repository as its build context. Keep the two cloned repositories adjacent in the home directory:
 
 ```text
-CCNAAUTO-LAB/
-├── Lab 09 - RESTCONF Management Console/
-└── Lab 10 - Containerize the RESTCONF Management Console/
+~/
+├── devnet-associate-lab09/
+└── devnet-associate-lab10/
 ```
 
 ## Part 1: Review the container files
 
-Copy Lab 10 into the course workspace if it is not already present, then open it:
+On github.com, select **+ > New repository**, enter `devnet-associate-lab10`, select **Public**, add a README, and select **Create repository**. On the new repository page, select **Code > HTTPS** and copy the URL. Clone it, add the supplied container files, and open the project:
 
 ```bash
-cd "/path/to/CCNAAUTO-LAB/Lab 10 - Containerize the RESTCONF Management Console"
+cd ~
+git clone https://github.com/YOUR-USERNAME/devnet-associate-lab10.git
+cp -R "/path/to/Lab 10 - Containerize the RESTCONF Management Console/." \
+  ~/devnet-associate-lab10/
+cd ~/devnet-associate-lab10
 code .
 ```
 

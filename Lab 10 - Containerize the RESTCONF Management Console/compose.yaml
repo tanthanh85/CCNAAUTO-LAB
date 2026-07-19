@@ -1,8 +1,8 @@
 services:
   console:
     build:
-      context: ../Lab 09 - RESTCONF Management Console
-      dockerfile: ../Lab 10 - Containerize the RESTCONF Management Console/Dockerfile
+      context: ../devnet-associate-lab09
+      dockerfile: ../devnet-associate-lab10/Dockerfile
     image: devnet/restconf-console:lab10
     container_name: lab10-restconf-console
     env_file:

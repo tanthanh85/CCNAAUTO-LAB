@@ -20,6 +20,15 @@ Lab 7 expressed intent as YAML, rendered device-specific CLI, and transported th
 
 Use an Ubuntu workstation with administrator access and a private, reservable IOS XE sandbox that supports RESTCONF. Connect its VPN and obtain the management address, RESTCONF port, username, and password. Do not use an Always-On device for configuration or save lab changes to startup configuration.
 
+## Before you begin: Create the Lab 8 repository
+
+On github.com, select **+ > New repository**, enter `devnet-associate-lab08`, select **Public**, add a README, and select **Create repository**. On the new repository page, select **Code > HTTPS** and copy the URL. Clone the repository before beginning the lab:
+
+```bash
+cd ~
+git clone https://github.com/YOUR-USERNAME/devnet-associate-lab08.git
+```
+
 ## 1. Install Docker Engine
 
 Remove conflicting distribution packages if they are installed:
@@ -67,8 +76,8 @@ Membership in the `docker` group grants root-equivalent control of the workstati
 Clone Cisco's repository and start the packaged container environment:
 
 ```bash
-mkdir -p ~/devnet-associate/tools
-cd ~/devnet-associate/tools
+mkdir -p ~/devnet-tools
+cd ~/devnet-tools
 git clone https://github.com/CiscoDevNet/yangsuite.git
 cd yangsuite/docker
 ./start_yang_suite.sh
@@ -147,12 +156,12 @@ Do not execute a modifying request in YANG Suite until the URI and payload have 
 
 ## 5. Prepare and inspect the Python project
 
+Add the supplied Python project to the repository cloned at the beginning of the lab:
+
 ```bash
-cd ~/devnet-associate
-git pull --ff-only
-cp -R "/path/to/Lab 08 - RESTCONF Automation with YANG Suite" \
-  ~/devnet-associate/labs/lab08
-cd ~/devnet-associate/labs/lab08
+cp -R "/path/to/Lab 08 - RESTCONF Automation with YANG Suite/." \
+  ~/devnet-associate-lab08/
+cd ~/devnet-associate-lab08
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
@@ -210,7 +219,7 @@ python cleanup_loopbacks.py --apply
 python verify_loopbacks.py
 ```
 
-The final `Missing` list should contain all ten lab interfaces. Restore the device `host` in `restconf.yaml` to `REPLACE_WITH_RESERVED_ROUTER_ADDRESS`. Confirm `.env`, CA material, and runtime artifacts are ignored, then commit the reusable code to the public GitHub course repository:
+The final `Missing` list should contain all ten lab interfaces. Restore the device `host` in `restconf.yaml` to `REPLACE_WITH_RESERVED_ROUTER_ADDRESS`. Confirm `.env`, CA material, and runtime artifacts are ignored, then commit the reusable code to the public Lab 8 GitHub repository:
 
 ```bash
 git add .

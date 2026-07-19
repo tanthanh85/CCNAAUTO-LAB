@@ -38,11 +38,14 @@ lab07/
 
 ## 1. Prepare the project
 
+On github.com, select **+ > New repository**, enter `devnet-associate-lab07`, select **Public**, add a README, and select **Create repository**. On the new repository page, select **Code > HTTPS** and copy the URL. Then clone it and add the supplied project:
+
 ```bash
-cd ~/devnet-associate
-git pull --ff-only
-cp -R "/path/to/Lab 07 - CLI Automation with Jinja2" ~/devnet-associate/labs/lab07
-cd ~/devnet-associate/labs/lab07
+cd ~
+git clone https://github.com/YOUR-USERNAME/devnet-associate-lab07.git
+cp -R "/path/to/Lab 07 - CLI Automation with Jinja2/." \
+  ~/devnet-associate-lab07/
+cd ~/devnet-associate-lab07
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
@@ -120,7 +123,7 @@ python cleanup_loopbacks.py --apply
 python verify_interfaces.py
 ```
 
-After cleanup, all ten interfaces should appear in `Missing`. Restore the `host` value in `device.yaml` to `REPLACE_WITH_RESERVED_ROUTER_ADDRESS`, review `git status`, and confirm that `.env` and runtime artifacts are ignored. Commit the reusable files to the public GitHub course repository created in Lab 1:
+After cleanup, all ten interfaces should appear in `Missing`. Restore the `host` value in `device.yaml` to `REPLACE_WITH_RESERVED_ROUTER_ADDRESS`, review `git status`, and confirm that `.env` and runtime artifacts are ignored. Commit the reusable files to the public Lab 7 GitHub repository:
 
 ```bash
 git add .

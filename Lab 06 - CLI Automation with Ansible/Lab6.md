@@ -14,7 +14,7 @@ This lab repeats the operational objectives of Lab 5 using Ansible. You will con
 - Store loopback intent in YAML variables.
 - Configure repeated resources with an Ansible loop.
 - Use assertions, check mode, diffs, post-checks, and bounded cleanup.
-- Publish the reusable project to the public GitHub course repository.
+- Publish the reusable project to a public Lab 6 GitHub repository.
 
 ```mermaid
 flowchart LR
@@ -56,13 +56,14 @@ lab06/
 
 ## Part 1: Prepare the Ansible project
 
+On github.com, select **+ > New repository**, enter `devnet-associate-lab06`, select **Public**, add a README, and select **Create repository**. On the new repository page, select **Code > HTTPS** and copy the URL. Then clone it and add the supplied Ansible project:
+
 ```bash
-mkdir -p ~/devnet-associate/labs
-cd ~/devnet-associate
-git pull --ff-only
-cp -R "/path/to/Lab 06 - CLI Automation with Ansible" \
-  ~/devnet-associate/labs/lab06
-cd ~/devnet-associate/labs/lab06
+cd ~
+git clone https://github.com/YOUR-USERNAME/devnet-associate-lab06.git
+cp -R "/path/to/Lab 06 - CLI Automation with Ansible/." \
+  ~/devnet-associate-lab06/
+cd ~/devnet-associate-lab06
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip

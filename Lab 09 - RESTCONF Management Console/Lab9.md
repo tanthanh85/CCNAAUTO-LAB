@@ -59,12 +59,14 @@ lab09/
 
 Use a private, reservable IOS XE sandbox with RESTCONF enabled. Connect the sandbox VPN, but do not add the router to the application yet.
 
+On github.com, select **+ > New repository**, enter `devnet-associate-lab09`, select **Public**, add a README, and select **Create repository**. On the new repository page, select **Code > HTTPS** and copy the URL. Then clone it and add the supplied application:
+
 ```bash
-cd ~/devnet-associate
-git pull --ff-only
-cp -R "/path/to/Lab 09 - RESTCONF Management Console" \
-  ~/devnet-associate/labs/lab09
-cd ~/devnet-associate/labs/lab09
+cd ~
+git clone https://github.com/YOUR-USERNAME/devnet-associate-lab09.git
+cp -R "/path/to/Lab 09 - RESTCONF Management Console/." \
+  ~/devnet-associate-lab09/
+cd ~/devnet-associate-lab09
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip

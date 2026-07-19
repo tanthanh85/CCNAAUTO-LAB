@@ -55,13 +55,14 @@ The supplied Python files contain `NotImplementedError` placeholders. Replace ea
 
 ## Part 1: Prepare and inspect the project
 
+On github.com, select **+ > New repository**, enter `devnet-associate-lab03`, select **Public**, add a README, and select **Create repository**. On the new repository page, select **Code > HTTPS** and copy the URL. Then clone it and add the supplied starter files:
+
 ```bash
-mkdir -p ~/devnet-associate/labs
-cd ~/devnet-associate
-git pull --ff-only
-cp -R "/path/to/Lab 03 - Python Functions Classes and Modules" \
-  ~/devnet-associate/labs/lab03
-cd ~/devnet-associate/labs/lab03
+cd ~
+git clone https://github.com/YOUR-USERNAME/devnet-associate-lab03.git
+cp -R "/path/to/Lab 03 - Python Functions Classes and Modules/." \
+  ~/devnet-associate-lab03/
+cd ~/devnet-associate-lab03
 python3 -m venv .venv
 source .venv/bin/activate
 printf '%s\n' '.venv/' '__pycache__/' '*.py[cod]' > .gitignore

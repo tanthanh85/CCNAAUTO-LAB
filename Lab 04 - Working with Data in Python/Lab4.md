@@ -52,13 +52,14 @@ lab04/
 
 ## Part 1: Prepare the project
 
+On github.com, select **+ > New repository**, enter `devnet-associate-lab04`, select **Public**, add a README, and select **Create repository**. On the new repository page, select **Code > HTTPS** and copy the URL. Then clone it and add the supplied starter files:
+
 ```bash
-mkdir -p ~/devnet-associate/labs
-cd ~/devnet-associate
-git pull --ff-only
-cp -R "/path/to/Lab 04 - Working with Data in Python" \
-  ~/devnet-associate/labs/lab04
-cd ~/devnet-associate/labs/lab04
+cd ~
+git clone https://github.com/YOUR-USERNAME/devnet-associate-lab04.git
+cp -R "/path/to/Lab 04 - Working with Data in Python/." \
+  ~/devnet-associate-lab04/
+cd ~/devnet-associate-lab04
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip

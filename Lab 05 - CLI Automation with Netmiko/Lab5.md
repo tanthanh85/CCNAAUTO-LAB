@@ -14,7 +14,7 @@ In this lab, you will connect to a private Cisco IOS XE reservable sandbox with 
 - Load and validate loopback metadata from YAML.
 - Generate interface configuration with a Python `for` loop.
 - Perform pre-check, change, post-check, and cleanup operations.
-- Store code and non-sensitive evidence in the public GitHub course repository.
+- Store code and non-sensitive evidence in a public Lab 5 GitHub repository.
 
 ```mermaid
 flowchart LR
@@ -53,15 +53,14 @@ lab05/
 
 ## Part 1: Prepare the project and sandbox
 
-Copy the project and install its dependencies:
+On github.com, select **+ > New repository**, enter `devnet-associate-lab05`, select **Public**, add a README, and select **Create repository**. On the new repository page, select **Code > HTTPS** and copy the URL. Then clone it, add the supplied project, and install its dependencies:
 
 ```bash
-mkdir -p ~/devnet-associate/labs
-cd ~/devnet-associate
-git pull --ff-only
-cp -R "/path/to/Lab 05 - CLI Automation with Netmiko" \
-  ~/devnet-associate/labs/lab05
-cd ~/devnet-associate/labs/lab05
+cd ~
+git clone https://github.com/YOUR-USERNAME/devnet-associate-lab05.git
+cp -R "/path/to/Lab 05 - CLI Automation with Netmiko/." \
+  ~/devnet-associate-lab05/
+cd ~/devnet-associate-lab05
 python3 -m venv .venv
 source .venv/bin/activate
 python -m pip install --upgrade pip
@@ -306,7 +305,7 @@ On GitHub, verify that `.env`, `.venv`, `artifacts`, passwords, and sandbox VPN 
 - The loop creates and verifies `Loopback501` through `Loopback510`.
 - Cleanup removes all ten interfaces.
 - Credentials and sandbox-specific evidence are not committed.
-- The public GitHub course repository contains the Lab 5 code.
+- The public Lab 5 GitHub repository contains the lab code.
 
 ## Further references
 
