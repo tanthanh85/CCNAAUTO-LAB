@@ -299,18 +299,15 @@ Each run should report three devices, two enabled devices, and one device for ea
 
 ## Part 8: Check syntax and behavior
 
-Perform the syntax check before running all tests:
+Perform a syntax check on the completed program and test file:
 
 ```bash
 python -m py_compile data_pipeline.py tests/test_data_pipeline.py
-python -m compileall -q .
-python -m unittest discover -v
 ```
 
 The distinction is important:
 
-- `py_compile` and `compileall` detect syntax problems.
-- Unit tests execute functions and compare their behavior with expected results.
+- `py_compile` detects syntax problems before the program runs.
 - Running the program confirms that the functions work together as one workflow.
 
 Record the outcome in `observations.md`:

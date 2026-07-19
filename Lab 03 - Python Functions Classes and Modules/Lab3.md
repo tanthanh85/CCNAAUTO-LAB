@@ -69,20 +69,6 @@ printf '%s\n' '.venv/' '__pycache__/' '*.py[cod]' > .gitignore
 code .
 ```
 
-Select the `.venv` Python interpreter in VS Code. Check that Python can parse every starter file:
-
-```bash
-python -m compileall -q .
-```
-
-Run the tests:
-
-```bash
-python -m unittest discover -v
-```
-
-Failures are expected because the exercise is unfinished. A useful test failure shows which behavior must be implemented next.
-
 ## Part 2: Understand and create functions
 
 A function is a named block of code that performs a task. Defining a function does not run it. The function runs when another statement calls it.
@@ -329,8 +315,6 @@ This guard runs `main()` when the file is executed directly, but not when anothe
 
 ```bash
 python -m py_compile app.py netinventory/*.py tests/test_netinventory.py
-python -m compileall -q .
-python -m unittest discover -v
 python app.py
 ```
 
