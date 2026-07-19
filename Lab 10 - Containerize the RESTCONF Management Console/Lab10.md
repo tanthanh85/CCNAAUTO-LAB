@@ -113,6 +113,8 @@ If `cryptography` is unavailable in the workstation's current Python environment
 
 Do not reuse the example values. Do not place secrets in the Dockerfile, Compose file, image, or Git repository. Docker Compose reads `.env` when it creates the container and passes the variables at runtime.
 
+Keep the same `INVENTORY_ENCRYPTION_KEY` for the entire lifecycle of the named inventory volume. Generating a different key while retaining the volume makes previously stored router credentials unreadable. If the key is intentionally replaced, remove and recreate the inventory volume, then add the routers again.
+
 If the router uses a certificate issued by a private CA:
 
 1. Copy only the CA certificate—not a private key—to `certificates/router-ca.pem`.
@@ -273,11 +275,12 @@ Confirm that no secret or certificate is staged, then publish the reusable Lab 1
 git status --ignored
 git add Lab10.md Dockerfile compose.yaml .env.example .gitignore \
   verify_container.py certificates/.gitkeep
-git add "../Lab 09 - RESTCONF Management Console/.dockerignore"
 git diff --staged
 git commit -m "Containerize the Flask RESTCONF console"
 git push
 ```
+
+The `.dockerignore` file belongs to the separate Lab 9 project and must be committed from the Lab 9 repository. Git cannot stage a file outside the current repository.
 
 ## Completion criteria
 

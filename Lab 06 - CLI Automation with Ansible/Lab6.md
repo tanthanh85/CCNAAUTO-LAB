@@ -161,9 +161,11 @@ The playbook checks:
 - The YAML list contains exactly ten entries.
 - IDs and addresses are unique.
 - IDs are limited to 601–610.
-- Addresses use `/32` notation.
+- Addresses are limited to `198.18.6.1/32` through `198.18.6.10/32`.
 - Descriptions begin with `LAB6_`.
-- None of the requested names already exists.
+- An existing target loopback must already contain the exact lab description.
+
+These checks use basic assertions and regular-expression matching. More advanced Ansible IP-address filters are intentionally omitted so that the focus remains on inventories, variables, tasks, modules, and loops.
 
 The configuration task uses an Ansible loop:
 

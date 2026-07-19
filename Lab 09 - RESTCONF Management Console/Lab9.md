@@ -123,10 +123,10 @@ flowchart TD
     D --> E["Make no RESTCONF calls"]
     C --> F["Approved request: send each RESTCONF operation"]
     F --> G["IOS XE processes the changes"]
-    G --> H["Return the processed count"]
+    G --> H["Return a result for every entry"]
 ```
 
-Pre-validating the entire batch prevents an invalid fifth entry from being discovered after four earlier entries have already changed the router. Device-side failures can still produce a partial batch because RESTCONF calls are independent transactions. A production system would add rollback or use a transactional datastore when available.
+Pre-validating the entire batch prevents an invalid fifth entry from being discovered after four earlier entries have already changed the router. Device-side failures can still produce a partial batch because RESTCONF calls are independent transactions. The API therefore returns a success or failure result for every entry, and the GUI reports any failures. A production system would add rollback or use a transactional datastore when available.
 
 ## 4. Start the console and add inventory
 

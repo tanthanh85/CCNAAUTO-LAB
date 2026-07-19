@@ -37,9 +37,12 @@ def cipher():
 
 def list_routers():
     with connection() as conn:
-        return [dict(row) | {"password": None} for row in conn.execute(
-            "SELECT id,name,ip,username,ssh_port,restconf_port,password FROM routers ORDER BY name"
-        )]
+        return [
+            dict(row) | {"password": None}
+            for row in conn.execute(
+                "SELECT id,name,ip,username,ssh_port,restconf_port,password FROM routers ORDER BY name"
+            )
+        ]
 
 
 def get_router(router_id):
@@ -61,8 +64,14 @@ def add_router(item):
         with connection() as conn:
             cursor = conn.execute(
                 "INSERT INTO routers(name,ip,username,password,ssh_port,restconf_port) VALUES(?,?,?,?,?,?)",
-                (item["name"], item["ip"], item["username"], encrypted,
-                 item["ssh_port"], item.get("restconf_port", 443)),
+                (
+                    item["name"],
+                    item["ip"],
+                    item["username"],
+                    encrypted,
+                    item["ssh_port"],
+                    item.get("restconf_port", 443),
+                ),
             )
             return cursor.lastrowid
     except sqlite3.IntegrityError as exc:

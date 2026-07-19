@@ -27,18 +27,26 @@ def load_inventory():
             raise ValueError(f"{name} requires a LAB7_ description")
         if name in names or str(address.ip) in addresses:
             raise ValueError("Interface names and addresses must be unique")
-        names.add(name); addresses.add(str(address.ip))
+        names.add(name)
+        addresses.add(str(address.ip))
     if names != {f"Loopback{number}" for number in range(701, 711)}:
         raise ValueError("Define Loopback701 through Loopback710 exactly once")
     return data
 
 
 def render_config(data):
-    env = Environment(loader=FileSystemLoader(ROOT / "templates"),
-                      undefined=StrictUndefined, trim_blocks=True, lstrip_blocks=True)
+    env = Environment(
+        loader=FileSystemLoader(ROOT / "templates"),
+        undefined=StrictUndefined,
+        trim_blocks=True,
+        lstrip_blocks=True,
+    )
     env.filters["address"] = lambda value: str(ipaddress.ip_interface(value).ip)
     env.filters["netmask"] = lambda value: str(ipaddress.ip_interface(value).netmask)
-    return env.get_template("loopbacks.j2").render(loopbacks=data["loopbacks"]).strip() + "\n"
+    return (
+        env.get_template("loopbacks.j2").render(loopbacks=data["loopbacks"]).strip()
+        + "\n"
+    )
 
 
 def connect(data):
@@ -46,8 +54,12 @@ def connect(data):
     username, password = os.getenv("LAB_USERNAME"), os.getenv("LAB_PASSWORD")
     if not username or not password:
         raise RuntimeError("Set LAB_USERNAME and LAB_PASSWORD in .env")
-    params = {**data["device"], "username": username, "password": password,
-              "secret": os.getenv("LAB_SECRET", "")}
+    params = {
+        **data["device"],
+        "username": username,
+        "password": password,
+        "secret": os.getenv("LAB_SECRET", ""),
+    }
     if params["host"].startswith("REPLACE_"):
         raise RuntimeError("Replace the device host in device.yaml")
     return ConnectHandler(**params)
