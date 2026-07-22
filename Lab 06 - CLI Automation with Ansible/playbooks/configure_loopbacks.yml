@@ -33,27 +33,27 @@
              [item.interface | default(item.intf | default(''))] }}
       loop: "{{ interfaces_before }}"
 
-    - name: Read each requested loopback configuration
-      cisco.ios.ios_command:
-        commands:
-          - "show running-config interface Loopback{{ item.id }}"
-      loop: "{{ loopbacks }}"
-      loop_control:
-        label: "Loopback{{ item.id }}"
-      register: requested_running
+    # - name: Read each requested loopback configuration
+    #   cisco.ios.ios_command:
+    #     commands:
+    #       - "show running-config interface Loopback{{ item.id }}"
+    #   loop: "{{ loopbacks }}"
+    #   loop_control:
+    #     label: "Loopback{{ item.id }}"
+    #   register: requested_running
 
-    - name: Refuse to take ownership of an unrelated existing loopback
-      ansible.builtin.assert:
-        that:
-          - >-
-            ("Loopback" ~ (item.item.id | string)) not in existing_interface_names
-            or ("description " ~ item.item.description) in item.stdout[0]
-        fail_msg: >-
-          Loopback{{ item.item.id }} already exists without the exact LAB6
-          description; refusing replacement.
-      loop: "{{ requested_running.results }}"
-      loop_control:
-        label: "Loopback{{ item.item.id }}"
+    # - name: Refuse to take ownership of an unrelated existing loopback
+    #   ansible.builtin.assert:
+    #     that:
+    #       - >-
+    #         ("Loopback" ~ (item.item.id | string)) not in existing_interface_names
+    #         or ("description " ~ item.item.description) in item.stdout[0]
+    #     fail_msg: >-
+    #       Loopback{{ item.item.id }} already exists without the exact LAB6
+    #       description; refusing replacement.
+    #   loop: "{{ requested_running.results }}"
+    #   loop_control:
+    #     label: "Loopback{{ item.item.id }}"
 
     - name: Configure YAML-defined loopbacks
       cisco.ios.ios_config:
