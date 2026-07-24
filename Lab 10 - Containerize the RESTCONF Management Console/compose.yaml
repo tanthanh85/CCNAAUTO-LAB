@@ -5,10 +5,11 @@ services:
       dockerfile: ../devnet-associate-lab10/Dockerfile
     image: devnet/restconf-console:lab10
     container_name: lab10-restconf-console
+    # Share the Ubuntu host network namespace so RESTCONF traffic follows
+    # the routes installed by the Cisco sandbox VPN client.
+    network_mode: host
     env_file:
       - .env
-    ports:
-      - "127.0.0.1:8000:8000"
     volumes:
       - inventory_data:/app/instance
       - ./certificates:/certificates:ro
