@@ -67,9 +67,14 @@ class IOSXE:
         uri = config.ROUTE_ITEM_URI.format(
             prefix=quote(prefix, safe=""),
             mask=quote(mask, safe=""),
-            next_hop=quote(route["next_hop"], safe=""),
         )
-        payload = {"Cisco-IOS-XE-native:fwd-list": {"fwd": route["next_hop"]}}
+        payload = {
+            "Cisco-IOS-XE-native:ip-route-interface-forwarding-list": {
+                "prefix": prefix,
+                "mask": mask,
+                "fwd-list": [{"fwd": route["next_hop"]}],
+            }
+        }
         self.request("PUT", uri, json=payload)
 
     def delete_route(self, route):
@@ -77,7 +82,6 @@ class IOSXE:
         uri = config.ROUTE_ITEM_URI.format(
             prefix=quote(str(network.network_address), safe=""),
             mask=quote(str(network.netmask), safe=""),
-            next_hop=quote(route["next_hop"], safe=""),
         )
         self.request("DELETE", uri)
 
